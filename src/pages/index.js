@@ -13,6 +13,10 @@ export default function Home() {
       </Head>
       <main className={`${styles.main} ${inter.className}`}>
         <h1>PatioPal App</h1>
+        <p>
+          Your friendly hub for community news, events, and connecting with
+          neighbors right in your building.
+        </p>
         <SignupForm />
       </main>
     </>
