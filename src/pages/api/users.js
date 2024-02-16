@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(200).json(users);
   }
   if (req.method === "POST") {
-    console.log("request: ", req.body);
+    // console.log("request: ", req.body);
     try {
       const userData = req.body;
       await User.create(userData);
