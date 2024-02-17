@@ -3,6 +3,7 @@
 }
 
 .formContainer {
+  margin-top: 50px;
   display: grid;
   place-items: center;
 }

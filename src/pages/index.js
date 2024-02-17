@@ -11,7 +11,7 @@ export default function Home() {
       <Head>
         <title>PatioPal</title>
       </Head>
-      <body>
+      <div className="body">
         <main className={`${styles.main} ${inter.className}`}>
           <h1>PatioPal App</h1>
           <p>
@@ -20,7 +20,7 @@ export default function Home() {
           </p>
           <LoginForm />
         </main>
-      </body>
+      </div>
     </>
   );
 }
