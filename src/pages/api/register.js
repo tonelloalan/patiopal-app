@@ -1,14 +1,5 @@
 export default async function POST(req, res) {
   try {
-    // const {
-    //   firstName,
-    //   lastName,
-    //   username,
-    //   email,
-    //   passwordHash,
-    //   confirmPasswordHash,
-    // } = await req.json();
-
     const {
       firstName,
       lastName,
