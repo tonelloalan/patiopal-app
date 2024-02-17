@@ -62,6 +62,11 @@ export default function RegisterForm() {
       return;
     }
 
+    if (password !== confirmPassword) {
+      setError("Passwords must match!");
+      return;
+    }
+
     try {
       const res = await fetch("/api/register", {
         method: "POST",
@@ -80,6 +85,7 @@ export default function RegisterForm() {
 
       if (res.ok) {
         console.log("User registration successful.");
+        setError("");
         const form = e.target;
         form.reset();
       } else {
