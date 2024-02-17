@@ -8,6 +8,7 @@
 }
 
 .loginForm {
+  background-color: whitesmoke;
   padding: 25px 15px;
   border-top: solid 7px rgb(140, 150, 120);
   border-radius: 15px;
