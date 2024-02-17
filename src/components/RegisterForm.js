@@ -2,6 +2,7 @@
 import styles from "@/styles/RegisterForm.module.css";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function RegisterForm() {
   const [firstName, setFirstName] = useState("");
@@ -11,6 +12,8 @@ export default function RegisterForm() {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   // const handleSubmit = async (event) => {
   //   event.preventDefault(); // Prevent default form submission
@@ -60,14 +63,53 @@ export default function RegisterForm() {
     ) {
       setError("All fields are mandatory.");
       return;
-    }
+    } // This checks if any of the fields were left blank and informs user with error message in such case.
 
     if (password !== confirmPassword) {
       setError("Passwords must match!");
       return;
-    }
+    } // This checks is both entered passwords are not matching and informs user with error message in such case.
 
     try {
+      // CHECK IF USER ALREADY EXISTS...
+      const resUserExists = await fetch("/api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
+
+      const { userId } = await resUserExists.json(); // Get the userId received from the userExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
+
+      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
+      if (userId) {
+        console.log("THIS USER ALREADY EXISTS: ", userId);
+        setError("User already exists!");
+        return;
+      }
+      // ...CHECK IF USER ALREADY EXISTS.
+
+      // CHECK IF EMAIL ALREADY EXISTS...
+      const resEmailExists = await fetch("/api/emailExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { emailId } = await resEmailExists.json(); // Get the emailId received from the emailExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
+
+      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
+      if (emailId) {
+        console.log("THIS EMAIL IS ALREADY IN USE: ", emailId);
+        setError("Email is already in use!");
+        return;
+      }
+
+      // ...CHECK IF EMAIL ALREADY EXISTS.
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -88,6 +130,7 @@ export default function RegisterForm() {
         setError("");
         const form = e.target;
         form.reset();
+        router.push("/"); // After successfull user registration, user will be pushed to the login page.
       } else {
         console.log("User registration failed.");
       }
