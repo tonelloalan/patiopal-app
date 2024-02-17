@@ -8,8 +8,8 @@ export default function RegisterForm() {
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [passwordHash, setPasswordHash] = useState("");
-  const [confirmPasswordHash, setConfirmPasswordHash] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
 
   // const handleSubmit = async (event) => {
@@ -44,8 +44,8 @@ export default function RegisterForm() {
   // console.log("LAST NAME: ", lastName);
   // console.log("USERNAME: ", username);
   // console.log("EMAIL: ", email);
-  // console.log("PASSWORD: ", passwordHash);
-  // console.log("CONFIRM PASSWORD: ", confirmPasswordHash);
+  // console.log("PASSWORD: ", password);
+  // console.log("CONFIRM PASSWORD: ", confirmPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page from reloading
@@ -55,8 +55,8 @@ export default function RegisterForm() {
       !lastName ||
       !username ||
       !email ||
-      !passwordHash ||
-      !confirmPasswordHash
+      !password ||
+      !confirmPassword
     ) {
       setError("All fields are mandatory.");
       return;
@@ -73,8 +73,8 @@ export default function RegisterForm() {
           lastName,
           username,
           email,
-          passwordHash,
-          confirmPasswordHash,
+          password,
+          confirmPassword,
         }),
       });
 
@@ -124,17 +124,17 @@ export default function RegisterForm() {
             placeholder="Email"
           ></input>
           <input
-            onChange={(e) => setPasswordHash(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
-            name="passwordHash"
-            id="passwordHash"
+            name="password"
+            id="password"
             placeholder="Password"
           ></input>
           <input
-            onChange={(e) => setConfirmPasswordHash(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             type="password"
-            name="confirmPasswordHash"
-            id="confirmPasswordHash"
+            name="confirmPassword"
+            id="confirmPassword"
             placeholder="Repeat Password"
           ></input>
           <button>Register</button>

@@ -1,20 +1,31 @@
+import dbConnect from "../../../db/connect";
+import User from "../../../db/models/User";
+import bcrypt from "bcryptjs";
+
 export default async function POST(req, res) {
   try {
-    const {
+    await dbConnect(); // db connection is essential before proceeding to POST new information to itself
+
+    const { firstName, lastName, username, email, password, confirmPassword } =
+      req.body;
+
+    const passwordHashed = await bcrypt.hash(password, 10); // bcrypt.hash method will hash the password in 10 rounds and value will be assigned to variable passwordHashed
+    const confirmPasswordHashed = await bcrypt.hash(confirmPassword, 10); // same here
+    await User.create({
       firstName,
       lastName,
       username,
       email,
-      passwordHash,
-      confirmPasswordHash,
-    } = req.body;
+      password: passwordHashed,
+      confirmPassword: confirmPasswordHashed,
+    }); // This is the code that will store the data in the MongoDB database.
 
-    console.log("FIRST NAME: ", firstName);
-    console.log("LAST NAME: ", lastName);
-    console.log("USERNAME: ", username);
-    console.log("EMAIL: ", email);
-    console.log("PASSWORD: ", passwordHash);
-    console.log("CONFIRM PASSWORD: ", confirmPasswordHash);
+    // console.log("FIRST NAME: ", firstName);
+    // console.log("LAST NAME: ", lastName);
+    // console.log("USERNAME: ", username);
+    // console.log("EMAIL: ", email);
+    // console.log("PASSWORD: ", passwordHash);
+    // console.log("CONFIRM PASSWORD: ", confirmPasswordHash);
 
     return res.status(201).json({ status: "User created successfully." });
   } catch (e) {
