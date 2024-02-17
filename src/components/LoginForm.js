@@ -1,9 +1,10 @@
 import useSWR from "swr";
 import { useState } from "react";
 import { useRouter } from "next/router"; // For redirection
+import styles from "@/styles/LoginForm.module.css";
 
-export default function SignupForm() {
-  const { mutate } = useSWR("/api/users");
+export default function LoginForm() {
+  // const { mutate } = useSWR("/api/users");
   const router = useRouter(); // Router for redirecting after sign-up.
 
   const [showForm, setShowForm] = useState(false); // State to control form visibility
@@ -44,25 +45,30 @@ export default function SignupForm() {
     <>
       <h3 onClick={toggleSignUp}>CREATE AN ACCOUNT</h3>
       {showForm && (
-        <form onSubmit={handleSubmit}>
+        <form className={styles.signupForm} onSubmit={handleSubmit}>
           <div>
             <label htmlFor="firstName">First Name:</label>
+            <br />
             <input type="text" name="firstName" id="firstName" required />
           </div>
           <div>
             <label htmlFor="lastName">Last Name:</label>
+            <br />
             <input type="text" name="lastName" id="lastName" required />
           </div>
           <div>
             <label htmlFor="username">Username:</label>
+            <br />
             <input type="text" name="username" id="username" required />
           </div>
           <div>
             <label htmlFor="email">Email:</label>
+            <br />
             <input type="text" name="email" id="email" required />
           </div>
           <div>
             <label htmlFor="passwordHash">Password:</label>
+            <br />
             <input
               type="password"
               name="passwordHash"
@@ -72,6 +78,7 @@ export default function SignupForm() {
           </div>
           <div>
             <label htmlFor="confirmPasswordHash">Confirm Password:</label>
+            <br />
             <input
               type="password"
               name="confirmPasswordHash"
