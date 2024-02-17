@@ -1,16 +1,17 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, models } from "mongoose";
 
-const { Schema } = mongoose;
+const userSchema = new Schema(
+  {
+    firstName: { type: String, required: true },
+    lastName: { type: String, required: true },
+    username: { type: String, required: true, unique: true },
+    email: { type: String, required: true, unique: true },
+    password: { type: String, required: true },
+    confirmPassword: { type: String, required: true },
+  },
+  { timestamps: true } // This will store the time and date when the data was added or updated
+);
 
-const userSchema = new Schema({
-  firstName: { type: String, required: true },
-  lastName: { type: String, required: true },
-  username: { type: String, required: true, unique: true },
-  email: { type: String, required: true, unique: true },
-  passwordHash: { type: String, required: true }, // Hashing functions are one-way and transform a password into an  irreversible string (the hash). You store the hash and not the original password itself. When verifying a user login, you hash the provided password and compare it to the stored hash. If they match, the password was correct.
-  confirmPasswordHash: { type: String, required: true }, // Hashing functions are one-way and transform a password into an  irreversible string (the hash). You store the hash and not the original password itself. When verifying a user login, you hash the provided password and compare it to the stored hash. If they match, the password was correct.
-});
-
-const User = mongoose.models.User || mongoose.model("User", userSchema);
+const User = models.User || mongoose.model("User", userSchema); // If you already have a the model, it will return the User, if not it will create a new model called User with the userSchema
 
 export default User;

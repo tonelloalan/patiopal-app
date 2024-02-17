@@ -2,15 +2,18 @@
 import styles from "@/styles/RegisterForm.module.css";
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/router";
 
 export default function RegisterForm() {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
-  const [passwordHash, setPasswordHash] = useState("");
-  const [confirmPasswordHash, setConfirmPasswordHash] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState("");
+
+  const router = useRouter();
 
   // const handleSubmit = async (event) => {
   //   event.preventDefault(); // Prevent default form submission
@@ -44,8 +47,8 @@ export default function RegisterForm() {
   // console.log("LAST NAME: ", lastName);
   // console.log("USERNAME: ", username);
   // console.log("EMAIL: ", email);
-  // console.log("PASSWORD: ", passwordHash);
-  // console.log("CONFIRM PASSWORD: ", confirmPasswordHash);
+  // console.log("PASSWORD: ", password);
+  // console.log("CONFIRM PASSWORD: ", confirmPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page from reloading
@@ -55,14 +58,58 @@ export default function RegisterForm() {
       !lastName ||
       !username ||
       !email ||
-      !passwordHash ||
-      !confirmPasswordHash
+      !password ||
+      !confirmPassword
     ) {
       setError("All fields are mandatory.");
       return;
-    }
+    } // This checks if any of the fields were left blank and informs user with error message in such case.
+
+    if (password !== confirmPassword) {
+      setError("Passwords must match!");
+      return;
+    } // This checks is both entered passwords are not matching and informs user with error message in such case.
 
     try {
+      // CHECK IF USER ALREADY EXISTS...
+      const resUserExists = await fetch("/api/userExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username }),
+      });
+
+      const { userId } = await resUserExists.json(); // Get the userId received from the userExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
+
+      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
+      if (userId) {
+        console.log("THIS USER ALREADY EXISTS: ", userId);
+        setError("User already exists!");
+        return;
+      }
+      // ...CHECK IF USER ALREADY EXISTS.
+
+      // CHECK IF EMAIL ALREADY EXISTS...
+      const resEmailExists = await fetch("/api/emailExists", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ email }),
+      });
+
+      const { emailId } = await resEmailExists.json(); // Get the emailId received from the emailExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
+
+      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
+      if (emailId) {
+        console.log("THIS EMAIL IS ALREADY IN USE: ", emailId);
+        setError("Email is already in use!");
+        return;
+      }
+
+      // ...CHECK IF EMAIL ALREADY EXISTS.
+
       const res = await fetch("/api/register", {
         method: "POST",
         headers: {
@@ -73,15 +120,17 @@ export default function RegisterForm() {
           lastName,
           username,
           email,
-          passwordHash,
-          confirmPasswordHash,
+          password,
+          confirmPassword,
         }),
       });
 
       if (res.ok) {
         console.log("User registration successful.");
+        setError("");
         const form = e.target;
         form.reset();
+        router.push("/"); // After successfull user registration, user will be pushed to the login page.
       } else {
         console.log("User registration failed.");
       }
@@ -124,17 +173,17 @@ export default function RegisterForm() {
             placeholder="Email"
           ></input>
           <input
-            onChange={(e) => setPasswordHash(e.target.value)}
+            onChange={(e) => setPassword(e.target.value)}
             type="password"
-            name="passwordHash"
-            id="passwordHash"
+            name="password"
+            id="password"
             placeholder="Password"
           ></input>
           <input
-            onChange={(e) => setConfirmPasswordHash(e.target.value)}
+            onChange={(e) => setConfirmPassword(e.target.value)}
             type="password"
-            name="confirmPasswordHash"
-            id="confirmPasswordHash"
+            name="confirmPassword"
+            id="confirmPassword"
             placeholder="Repeat Password"
           ></input>
           <button>Register</button>

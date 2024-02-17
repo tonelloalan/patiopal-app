@@ -28,8 +28,8 @@ export default function LoginForm() {
               ></input>
               <input
                 type="password"
-                name="passwordHash"
-                id="passwordHash"
+                name="password"
+                id="password"
                 placeholder="Password"
               ></input>
 
