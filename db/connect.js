@@ -3,8 +3,10 @@ import mongoose from "mongoose";
 const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) {
+  console.log("MONGODB_URI: ", MONGODB_URI);
+  console.log('Test Env Variable (Should be "testing"):', process.env.TEST_VAR);
   throw Error(
-    "Please devine the MONGODB_URI environment variable inside .env.local"
+    "Please define the MONGODB_URI environment variable inside .env.local"
   );
 }
 

@@ -1,16 +1,23 @@
+"use client";
+
+import { signOut, useSession } from "next-auth/react";
 import styles from "@/styles/UserInfo.module.css";
 
 export default function UserInfo() {
+  const { data: session } = useSession(); // In the Session we will have mainly name and email
+
+  console.log("SESSION USER: ", session); // Ensure firstName is present
+
   return (
     <div className={styles.userInfoContainer}>
       <div className={styles.userInfo}>
         <div>
-          Name: <span>Alan Tonello</span>
+          Name: <span>{session?.user?.name}</span>
         </div>
         <div>
-          Email: <span>alantb2@gmail.com</span>
+          Email: <span>{session?.user?.email}</span>
         </div>
-        <button>Log out</button>
+        <button onClick={() => signOut()}>Log out</button>
       </div>
     </div>
   );
