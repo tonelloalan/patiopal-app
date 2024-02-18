@@ -7,8 +7,6 @@ export default async function POST(req, res) {
     const { email } = await req.body;
     const emailId = await User.findOne({ email }).select("_id");
 
-    console.log("USER ID: ", emailId);
-
     return res.json({ emailId });
   } catch (error) {
     console.error("ERROR: ", error);

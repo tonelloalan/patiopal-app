@@ -15,41 +15,6 @@ export default function RegisterForm() {
 
   const router = useRouter();
 
-  // const handleSubmit = async (event) => {
-  //   event.preventDefault(); // Prevent default form submission
-  //   const formData = new FormData(event.target);
-  //   const userData = Object.fromEntries(formData);
-
-  //   console.log("USER DATA: ", userData);
-
-  //   const response = await fetch("/api/users", {
-  //     method: "POST",
-  //     headers: {
-  //       "Content-Type": "application/json",
-  //     },
-  //     body: JSON.stringify(userData),
-  //   });
-  //   if (response.ok) {
-  //     // User created successfully - display success message and redirect to main page
-  //     alert("Account created! You will be redirected."); // Change later for a nicer UX.
-  //     event.target.reset(); // Reset the form using the event target
-  //     router.push("/");
-
-  //     console.log("RESPONSE: ", response);
-  //   } else {
-  //     // Handle error - display form errors
-  //     const errorData = await response.json(); // API should send back error data for this to work - check api/users.js
-  //     alert(`Signup failed: ${errorData.message}`); // Display the error message, customize error details later if needed.
-  //   }
-  // };
-
-  // console.log("FIRST NAME: ", firstName);
-  // console.log("LAST NAME: ", lastName);
-  // console.log("USERNAME: ", username);
-  // console.log("EMAIL: ", email);
-  // console.log("PASSWORD: ", password);
-  // console.log("CONFIRM PASSWORD: ", confirmPassword);
-
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page from reloading
 
