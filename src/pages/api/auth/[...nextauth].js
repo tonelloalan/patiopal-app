@@ -28,6 +28,7 @@ export const authOptions = {
           }
 
           // Include specific user properties needed on the client.
+          console.log("LOGGED IN USER: ", user);
           return {
             id: user._id, // Using a MongoDB _id
             firstName: user.firstName,
