@@ -1,13 +1,10 @@
 "use client";
 
-import { signOut, useSession } from "next-auth/react";
+import { getSession, signOut, useSession } from "next-auth/react";
 import styles from "@/styles/UserInfo.module.css";
 
 export default function UserInfo() {
   const { data: session, status } = useSession(); // In the Session we will have mainly name and email
-
-  console.log("RAW SESSION:", session); // Log in all possible states
-  console.log("STATUS:", status);
 
   if (status === "loading") {
     return <div>Loading...</div>; // Render a loading state
@@ -19,11 +16,14 @@ export default function UserInfo() {
         <div>
           Name:{" "}
           <span>
-            {session?.user?.firstName} {session?.user?.lastName}
+            {session?.token?.firstName} {session?.token?.lastName}
           </span>
         </div>
         <div>
-          Email: <span>{session?.user?.email}</span>
+          Username: <span>{session?.token?.username}</span>
+        </div>
+        <div>
+          Email: <span>{session?.token?.email}</span>
         </div>
         <button onClick={() => signOut()}>Log out</button>
       </div>

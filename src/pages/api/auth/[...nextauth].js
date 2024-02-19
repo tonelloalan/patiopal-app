@@ -28,9 +28,9 @@ export const authOptions = {
           }
 
           // Include specific user properties needed on the client.
-          console.log("LOGGED IN USER: ", user);
           return {
             id: user._id, // Using a MongoDB _id
+            username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
@@ -41,6 +41,28 @@ export const authOptions = {
       },
     }),
   ],
+  callbacks: {
+    async jwt({ token, account, profile }) {
+      await dbConnect(); // Connect to MongoDB database
+      const user = await User.findOne({ email: token.email }); // Get the user with the email
+      return {
+        ...token,
+        id: user._id, // Using a MongoDB _id
+        username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+      };
+    },
+    async session(session) {
+      await dbConnect(); // Connect to MongoDB database
+      const user = await User.findOne({ email: session.email }); // Get the user with the email
+
+      return {
+        ...session,
+      };
+    },
+  },
   session: {
     strategy: "jwt", // Json Web Token
   },

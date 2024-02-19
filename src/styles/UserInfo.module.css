@@ -1,7 +1,7 @@
 .userInfoContainer {
   display: grid;
   place-items: center;
-  height: 100vh;
+  /* height: 100vh; */
 }
 
 .userInfoContainer button {
