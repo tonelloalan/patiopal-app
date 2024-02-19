@@ -46,6 +46,7 @@ export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: "/",
+    signOut: "/", // Redirect to index ('/') after logout
   },
 };
 
