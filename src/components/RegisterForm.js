@@ -1,8 +1,9 @@
 "use client";
 import styles from "@/styles/RegisterForm.module.css";
 import Link from "next/link";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { useSession } from "next-auth/react";
 
 export default function RegisterForm() {
   const [firstName, setFirstName] = useState("");
@@ -14,6 +15,14 @@ export default function RegisterForm() {
   const [error, setError] = useState("");
 
   const router = useRouter();
+  const session = useSession();
+
+  // The below will prevent user from manually attempting to visit the login or register pages if already in session (logged in).
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.replace("/home");
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page from reloading

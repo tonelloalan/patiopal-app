@@ -1,17 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import styles from "@/styles/LoginForm.module.css";
 import Link from "next/link";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 
 export default function LoginForm() {
   const [showForm, setShowForm] = useState(true); // State to control form visibility
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+
+  const session = useSession();
   const router = useRouter();
+
+  // The below will prevent user from manually attempting to visit the login or register pages if already in session (logged in).
+  useEffect(() => {
+    if (session?.status === "authenticated") {
+      router.replace("/home");
+    }
+  }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
