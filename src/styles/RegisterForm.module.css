@@ -27,6 +27,7 @@
   font-size: small;
   margin: 6px;
   text-align: right;
+  align-self: flex-end;
 }
 .registerLink {
   text-decoration: underline;
@@ -45,7 +46,7 @@
   font-weight: bold;
   cursor: pointer;
   border: none;
-  border-radius: 5px;
+  border-radius: 8px;
   padding: 12px;
 }
 .errorMessage {

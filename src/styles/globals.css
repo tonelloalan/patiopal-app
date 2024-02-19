@@ -10,15 +10,15 @@
 
 body {
   margin: 0;
-  padding: 0;
+  padding: 15px;
 }
 
 input {
-  width: 400px;
+  min-width: 250px;
   border: solid 1px lightgray;
   padding: 5px 12px;
   background-color: rgba(255, 255, 255, 0.4);
-  border-radius: 5px;
+  border-radius: 8px;
 }
 a {
   text-decoration: none;
