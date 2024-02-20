@@ -64,12 +64,14 @@ export default function RegisterBuildForm() {
         // TO DO: redirect to "Buildings List" page: router.push("/pageName");
       }
 
+      const errorData = await res.json();
+      setError(errorData.error || "Something went wrong");
+
       // ... Handle response (success redirect, error display)
     } catch (e) {
       if (e.response) {
         // Error from the backend API
         const errorMessage = await e.response.json();
-        setError(errorMessage.e || "Something went wrong");
       } else {
         // Network error or other client-side issue
         setError("Failed to register building, please try again.");
@@ -102,11 +104,21 @@ export default function RegisterBuildForm() {
             type="text"
             placeholder="City"
           ></input>
-          <input
+          {/* <input
             onChange={(e) => setCountry(e.target.value)}
             type="text"
             placeholder="Country"
-          ></input>
+          ></input> */}
+          <select
+            id="country"
+            name="country"
+            onChange={(e) => setCountry(e.target.value)}
+          >
+            <option value="" disabled selected>
+              Select your country
+            </option>
+            <option value={"DE"}>Germany</option>
+          </select>
           <button>Register Building</button>
           {error && <div className={styles.errorMessage}>{error}</div>}
         </form>

@@ -8,16 +8,22 @@ export default async function handler(req, res) {
 
       const newBuilding = new Building(req.body); // Assuming form data in req.body
       await newBuilding.save();
+      // Success handling
       res.status(201).json({ message: "Building added!" });
     } catch (e) {
       console.error(e);
-      if (error.name === "ValidationError") {
+      if (e.name === "ValidationError") {
         // Handle Mongoose validation errors
         let errors = {};
-        Object.keys(error.errors).forEach((key) => {
-          errors[key] = error.errors[key].message;
+        Object.keys(e.errors).forEach((key) => {
+          errors[key] = e.errors[key].message;
         });
         res.status(400).json({ error: errors });
+      } else if (e.code === 11000) {
+        // MongoDB duplicate key error code
+        res
+          .status(400)
+          .json({ error: "A building with this address already exists" });
       } else {
         res.status(500).json({ error: "Server error" }); // Generic server error
       }
