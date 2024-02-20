@@ -8,16 +8,18 @@ const inter = Inter({ subsets: ["latin"] });
 export default function Home() {
   return (
     <>
-      <Head>
-        <title>PatioPal</title>
-      </Head>
-      <div className="body">
+      <div className={styles.indexBody}>
+        <Head>
+          <title>PatioPal</title>
+        </Head>
         <main className={`${styles.main} ${inter.className}`}>
-          <h1>PatioPal App</h1>
+          <h1>PatioPal</h1>
+
           <p>
             Your friendly hub for community news, events, and connecting with
             neighbors right in your building.
           </p>
+
           <LoginForm />
         </main>
       </div>

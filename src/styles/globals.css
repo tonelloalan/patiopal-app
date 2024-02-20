@@ -20,6 +20,15 @@ input {
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 8px;
 }
+
+select {
+  min-width: 250px;
+  border: solid 1px lightgray;
+  padding: 5px 12px;
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 8px;
+}
+
 a {
   text-decoration: none;
   color: black;

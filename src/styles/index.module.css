@@ -5,6 +5,10 @@
   text-align: center;
 }
 
+.main h1 {
+  font-size: xxx-large;
+}
+
 /* .main {
   display: flex;
   flex-direction: column;
