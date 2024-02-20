@@ -1,115 +1,79 @@
 "use client";
 import styles from "@/styles/RegisterForm.module.css";
-import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 
-export default function RegisterForm() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+export default function RegisterBuildForm() {
+  const [streetName, setStreetName] = useState("");
+  const [streetNumber, setStreetNumber] = useState("");
+  const [zipcode, setZipcode] = useState("");
+  const [city, setCity] = useState("");
+  const [country, setCountry] = useState("");
   const [error, setError] = useState("");
 
   const router = useRouter();
   const session = useSession();
 
-  // The below will prevent user from manually attempting to visit the login or register pages if already in session (logged in).
+  // Redirect to index.js if not authenticated
   useEffect(() => {
-    if (session?.status === "authenticated") {
-      router.replace("/home");
+    if (session?.status === "unauthenticated") {
+      router.push("/index");
     }
   }, [session, router]);
 
   const handleSubmit = async (e) => {
     e.preventDefault(); // prevent page from reloading
 
-    if (
-      !firstName ||
-      !lastName ||
-      !username ||
-      !email ||
-      !password ||
-      !confirmPassword
-    ) {
-      setError("All fields are mandatory.");
+    // Make all fields mandatory and display error message if submitted empty.
+    if (!streetName || !streetNumber || !zipcode || !city || !country) {
+      setError("All fields are mandatory!");
       return;
-    } // This checks if any of the fields were left blank and informs user with error message in such case.
+    }
 
-    if (password !== confirmPassword) {
-      setError("Passwords must match!");
+    // Simple zipcode format check (adapt this for your location)
+    const zipcodeRegex = /^[0-9]{5}$/;
+    if (!zipcodeRegex.test(zipcode)) {
+      setError("Please enter a valid zip code.");
       return;
-    } // This checks is both entered passwords are not matching and informs user with error message in such case.
+    }
 
     try {
-      // CHECK IF USER ALREADY EXISTS...
-      const resUserExists = await fetch("/api/userExists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username }),
-      });
-
-      const { userId } = await resUserExists.json(); // Get the userId received from the userExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
-
-      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
-      if (userId) {
-        console.log("THIS USER ALREADY EXISTS: ", userId);
-        setError("User already exists!");
-        return;
-      }
-      // ...CHECK IF USER ALREADY EXISTS.
-
-      // CHECK IF EMAIL ALREADY EXISTS...
-      const resEmailExists = await fetch("/api/emailExists", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ email }),
-      });
-
-      const { emailId } = await resEmailExists.json(); // Get the emailId received from the emailExists endpoint, which is checking if there is already an ID assigned to it or if it is still "null"...
-
-      // ... and then checks if it was written on the form when submitted. If this is the case, it will return an error message to the user informing so.
-      if (emailId) {
-        console.log("THIS EMAIL IS ALREADY IN USE: ", emailId);
-        setError("Email is already in use!");
-        return;
-      }
-
-      // ...CHECK IF EMAIL ALREADY EXISTS.
-
-      const res = await fetch("/api/register", {
+      const res = await fetch("/api/registerBuild", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          firstName,
-          lastName,
-          username,
-          email,
-          password,
-          confirmPassword,
+          streetName,
+          streetNumber,
+          zipcode,
+          city,
+          country,
         }),
       });
 
       if (res.ok) {
-        console.log("User registration successful.");
+        console.log("Building registration successful.");
         setError("");
-        const form = e.target;
-        form.reset();
-        router.push("/"); // After successfull user registration, user will be pushed to the login page.
-      } else {
-        console.log("User registration failed.");
+
+        const form = e.target; // Access the form element
+        form.reset(); // Reset the form
+        router.push("/home");
+
+        // TO DO: redirect to "Buildings List" page: router.push("/pageName");
       }
+
+      // ... Handle response (success redirect, error display)
     } catch (e) {
-      console.log("Error during registration: ", e);
+      if (e.response) {
+        // Error from the backend API
+        const errorMessage = await e.response.json();
+        setError(errorMessage.e || "Something went wrong");
+      } else {
+        // Network error or other client-side issue
+        setError("Failed to register building, please try again.");
+      }
     }
   };
 
@@ -119,55 +83,32 @@ export default function RegisterForm() {
         <h2>Register new Building</h2>
         <form onSubmit={handleSubmit} className={styles.formDetails}>
           <input
-            onChange={(e) => setFirstName(e.target.value)} // this stores the value inside this input field into the state
+            onChange={(e) => setStreetName(e.target.value)}
             type="text"
-            name="firstName"
-            id="firstName"
-            placeholder="First name"
+            placeholder="Street Name"
           ></input>
           <input
-            onChange={(e) => setLastName(e.target.value)}
+            onChange={(e) => setStreetNumber(e.target.value)}
             type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Last name"
+            placeholder="Street Number"
           ></input>
           <input
-            onChange={(e) => setUsername(e.target.value)}
+            onChange={(e) => setZipcode(e.target.value)}
             type="text"
-            name="username"
-            id="username"
-            placeholder="Username"
+            placeholder="Zipcode"
           ></input>
           <input
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={(e) => setCity(e.target.value)}
             type="text"
-            name="email"
-            id="email"
-            placeholder="Email"
+            placeholder="City"
           ></input>
           <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
+            onChange={(e) => setCountry(e.target.value)}
+            type="text"
+            placeholder="Country"
           ></input>
-          <input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            placeholder="Repeat Password"
-          ></input>
-          <button>Register</button>
-
+          <button>Register Building</button>
           {error && <div className={styles.errorMessage}>{error}</div>}
-
-          <Link className={styles.registerLinkPhrase} href={"/"}>
-            Already have an account?{" "}
-            <span className={styles.registerLink}>Login</span>
-          </Link>
         </form>
       </div>
     </div>

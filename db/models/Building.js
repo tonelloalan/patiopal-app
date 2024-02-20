@@ -3,11 +3,11 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const buildingSchema = new Schema({
-  streetName: { type: String, required: true },
-  streetNumber: { type: String, required: true },
-  zipcode: { type: String, required: true },
-  city: { type: String, required: true },
-  country: { type: String, required: true },
+  streetName: { type: String, required: [true, "Street name is required"] },
+  streetNumber: { type: String, required: [true, "Street number is required"] },
+  zipcode: { type: String, required: [true, "Zipcode is required"] },
+  city: { type: String, required: [true, "City is required"] },
+  country: { type: String, required: [true, "Country is required"] },
   residents: [{ type: Schema.Types.ObjectId, ref: "User" }],
 });
 
