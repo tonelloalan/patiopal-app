@@ -20,13 +20,6 @@ export default async function POST(req, res) {
       confirmPassword: confirmPasswordHashed,
     }); // This is the code that will store the data in the MongoDB database.
 
-    // console.log("FIRST NAME: ", firstName);
-    // console.log("LAST NAME: ", lastName);
-    // console.log("USERNAME: ", username);
-    // console.log("EMAIL: ", email);
-    // console.log("PASSWORD: ", passwordHash);
-    // console.log("CONFIRM PASSWORD: ", confirmPasswordHash);
-
     return res.status(201).json({ status: "User created successfully." });
   } catch (e) {
     console.error(e);

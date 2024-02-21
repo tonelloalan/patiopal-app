@@ -16,14 +16,14 @@ export default function UserInfo() {
         <div>
           Name:{" "}
           <span>
-            {session?.token?.firstName} {session?.token?.lastName}
+            {session?.user?.firstName} {session?.user?.lastName}
           </span>
         </div>
         <div>
-          Username: <span>{session?.token?.username}</span>
+          Username: <span>{session?.user?.username}</span>
         </div>
         <div>
-          Email: <span>{session?.token?.email}</span>
+          Email: <span>{session?.user?.email}</span>
         </div>
         <button onClick={() => signOut()}>Log out</button>
       </div>

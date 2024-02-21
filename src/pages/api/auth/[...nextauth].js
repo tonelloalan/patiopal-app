@@ -27,13 +27,17 @@ export const authOptions = {
             return null;
           }
 
-          // Include specific user properties needed on the client.
+          // If login is successful, include specific user properties needed on the client.
           return {
+            // ...profile,
             id: user._id, // Using a MongoDB _id
             username: user.username,
             firstName: user.firstName,
             lastName: user.lastName,
             email: user.email,
+            session: {
+              userId: user.id, // Or whichever property uniquely identifies the user.
+            },
           };
         } catch (error) {
           console.log("ERROR: ", error);
@@ -42,21 +46,13 @@ export const authOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, account, profile }) {
-      await dbConnect(); // Connect to MongoDB database
-      const user = await User.findOne({ email: token.email }); // Get the user with the email
-      return {
-        ...token,
-        id: user._id, // Using a MongoDB _id
-        username: user.username,
-        firstName: user.firstName,
-        lastName: user.lastName,
-        email: user.email,
-      };
-    },
-    async session(session) {
-      await dbConnect(); // Connect to MongoDB database
-      const user = await User.findOne({ email: session.email }); // Get the user with the email
+    async session({ session }) {
+      const user = await User.findOne({ email: session.user.email }); // Get the user with the email
+
+      session.user.lastName = `${user.lastName}`;
+      session.user.firstName = `${user.firstName}`;
+      session.user.username = `${user.username}`;
+      session.user._id = `${user._id}`;
 
       return {
         ...session,
