@@ -8,6 +8,7 @@ const userSchema = new Schema(
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     confirmPassword: { type: String, required: true },
+    // isAdmin: { type: Boolean, default: false },
   },
   { timestamps: true } // This will store the time and date when the data was added or updated
 );
