@@ -48,7 +48,9 @@ export default function BuildingsList() {
           <ul>
             {buildings.map((building) => (
               <li key={building._id}>
-                {building.streetName} {building.streetNumber}, {building.city}{" "}
+                <Link href={`/buildings/${building._id.toString()}`}>
+                  {building.streetName} {building.streetNumber}, {building.city}{" "}
+                </Link>
                 {/* Display relevant data */}
               </li>
             ))}

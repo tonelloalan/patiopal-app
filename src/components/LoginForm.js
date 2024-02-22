@@ -7,7 +7,7 @@ import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 
 export default function LoginForm() {
-  const [showForm, setShowForm] = useState(true); // State to control form visibility
+  const [showForm, setShowForm] = useState(false); // State to control form visibility
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
