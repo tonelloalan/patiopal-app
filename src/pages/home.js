@@ -15,6 +15,16 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <div className={styles.userInfoContainer}>
+        <div className={styles.userInfo}>
+          <div>
+            See my{" "}
+            <Link href={"/buildings"}>
+              <span>Buildings List</span>
+            </Link>
+          </div>
+        </div>
+      </div>
       <UserInfo />
     </>
   );
