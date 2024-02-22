@@ -62,8 +62,7 @@ export default function RegisterBuildForm() {
         const form = e.target; // Access the form element
         form.reset(); // Reset the form
 
-        router.push("/home");
-        // TO DO: redirect to "Buildings List" page: router.push("/pageName");
+        router.push("/buildings");
       } else {
         const errorData = await res.json();
         setError(errorData.error || "Something went wrong");
