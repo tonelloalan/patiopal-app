@@ -118,7 +118,7 @@ export default function RegisterBuildForm() {
               <option value="" disabled selected>
                 Select your country
               </option>
-              <option value={"DE"}>Germany</option>
+              <option value={"Germany"}>Germany</option>
             </select>
             <button>Register Building</button>
             {error && <div className={styles.errorMessage}>{error}</div>}

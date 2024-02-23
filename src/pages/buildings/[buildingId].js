@@ -1,22 +1,30 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 
 export default function BuildingDetailsPage() {
+  const { data: session } = useSession();
   const router = useRouter();
   const [building, setBuilding] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-
   const buildingId = router.query.buildingId;
 
-  console.log("BUILDING ID SLUG: ", buildingId);
+  console.log("BUILDING IS ADMIN: ", building?.isAdmin);
+  console.log("SESSION USER IS ADMIN: ", session?.user._id);
 
+  const isAdmin = building?.isAdmin.some(
+    (admin) => admin.$oid === session?.user._id
+  ); // Authorization check
+
+  // Fetch Building logic...
   useEffect(() => {
     const fetchBuilding = async () => {
       setIsLoading(true);
       try {
         const res = await fetch(`/api/buildings/${buildingId}`);
+
         if (!res.ok) {
           throw new Error("Failed to fetch building");
         }
@@ -50,7 +58,11 @@ export default function BuildingDetailsPage() {
       <p>
         {building.zipcode}, {building.city}, {building.country}
       </p>
-      {/* Add more details as needed */}
+      {isAdmin && ( // Conditional rendering of the Edit button
+        <button onClick={() => router.push(`/buildings/${building._id}/edit`)}>
+          Edit
+        </button>
+      )}
     </div>
   );
 }
