@@ -2,6 +2,7 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
+import EditBuildingForm from "@/components/EditBuildForm";
 
 export default function BuildingDetailsPage() {
   const { data: session } = useSession();
@@ -66,8 +67,8 @@ export default function BuildingDetailsPage() {
       <button onClick={handleEdit}>Edit</button>
       {edit && (
         <>
+          <EditBuildingForm building={building} />
           <button onClick={handleEdit}>Discard changes</button> <br />
-          <p>My conditional rendering works!</p>
         </>
       )}{" "}
     </div>

@@ -14,7 +14,7 @@ export default function BuildingsList() {
   useEffect(() => {
     const fetchBuildings = async () => {
       if (status === "loading") {
-        return; // Skip fetch if session is loading
+        return <p>Loading...</p>; // Skip fetch if session is loading
       }
 
       const res = await fetch("/api/buildings");
