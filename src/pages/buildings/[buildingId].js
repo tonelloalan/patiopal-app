@@ -11,17 +11,43 @@ export default function BuildingDetailsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+
   const buildingId = router.query.buildingId;
 
   console.log("BUILDING IS ADMIN: ", building?.isAdmin);
   console.log("SESSION USER IS ADMIN: ", session?.user._id);
+  console.log("BUILDING ID: ", buildingId);
 
   const handleEdit = () => {
     setEdit(!edit);
   };
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/buildings/${buildingId}`, {
+        method: "DELETE",
+      });
+
+      console.log("RESPONSE FE: ", res);
+
+      if (res.ok) {
+        console.log("Building deleted successfully!");
+        router.push("/buildings"); // Redirect to the buildings list
+      } else {
+        // Handle error from the API
+        const errorData = await res.json();
+        console.error("Error deleting building:", errorData);
+        // You might want to display an error message to the user here
+      }
+    } catch (e) {
+      console.error("Failed to delete building:", e);
+      // Handle network errors
+    }
+  };
+
   const isAdmin = building?.isAdmin.some(
-    (admin) => admin.$oid === session?.user._id
+    (admin) => admin.toString() === session?.user._id
   ); // Authorization check
 
   // Fetch Building logic...
@@ -64,7 +90,20 @@ export default function BuildingDetailsPage() {
       <p>
         {building.zipcode}, {building.city}, {building.country}
       </p>
-      {!edit && <button onClick={handleEdit}>Edit</button>}
+      {!edit &&
+        isAdmin && ( // Show buttons only for admins
+          <>
+            <button onClick={handleEdit}>Edit</button>
+            <button onClick={() => setShowDeleteConfirm(true)}>Remove</button>
+          </>
+        )}
+      {showDeleteConfirm && (
+        <div>
+          <p>Are you sure you want to delete this building?</p>
+          <button onClick={handleDelete}>Confirm</button>
+          <button onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
+        </div>
+      )}
       {edit && (
         <>
           <EditBuildingForm
