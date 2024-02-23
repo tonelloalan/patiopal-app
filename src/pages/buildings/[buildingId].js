@@ -86,6 +86,11 @@ export default function BuildingDetailsPage() {
       </Link>
       <h2>
         {building.streetName} {building.streetNumber}
+        <span>
+          {" "}
+          ({building.residents.length} Resident
+          {building.residents.length > 1 && "s"})
+        </span>
       </h2>
       <p>
         {building.zipcode}, {building.city}, {building.country}
