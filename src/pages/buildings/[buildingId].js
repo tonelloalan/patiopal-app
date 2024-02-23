@@ -67,7 +67,11 @@ export default function BuildingDetailsPage() {
       {!edit && <button onClick={handleEdit}>Edit</button>}
       {edit && (
         <>
-          <EditBuildingForm building={building} onUpdate={handleEdit} />
+          <EditBuildingForm
+            building={building}
+            onUpdate={handleEdit}
+            setBuilding={setBuilding}
+          />
           <button onClick={handleEdit}>Discard changes</button> <br />
         </>
       )}{" "}
