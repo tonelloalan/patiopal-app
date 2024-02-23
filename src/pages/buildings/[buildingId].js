@@ -11,17 +11,38 @@ export default function BuildingDetailsPage() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
-  const buildingId = router.query.buildingId;
+  const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showResidents, setShowResidents] = useState(false);
 
-  console.log("BUILDING IS ADMIN: ", building?.isAdmin);
-  console.log("SESSION USER IS ADMIN: ", session?.user._id);
+  const buildingId = router.query.buildingId;
 
   const handleEdit = () => {
     setEdit(!edit);
   };
 
+  const handleDelete = async () => {
+    try {
+      const res = await fetch(`/api/buildings/${buildingId}`, {
+        method: "DELETE",
+      });
+
+      if (res.ok) {
+        console.log("Building deleted successfully!");
+        router.push("/buildings"); // Redirect to the buildings list
+      } else {
+        // Handle error from the API
+        const errorData = await res.json();
+        console.error("Error deleting building:", errorData);
+        // You might want to display an error message to the user here
+      }
+    } catch (e) {
+      console.error("Failed to delete building:", e);
+      // Handle network errors
+    }
+  };
+
   const isAdmin = building?.isAdmin.some(
-    (admin) => admin.$oid === session?.user._id
+    (admin) => admin.toString() === session?.user._id
   ); // Authorization check
 
   // Fetch Building logic...
@@ -29,7 +50,9 @@ export default function BuildingDetailsPage() {
     const fetchBuilding = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/buildings/${buildingId}`);
+        const res = await fetch(
+          `/api/buildings/${buildingId}?populate=residents`
+        );
 
         if (!res.ok) {
           throw new Error("Failed to fetch building");
@@ -49,6 +72,14 @@ export default function BuildingDetailsPage() {
     }
   }, [buildingId]);
 
+  const handleShowResidents = () => {
+    setShowResidents(true);
+  };
+
+  const handleCloseResidents = () => {
+    setShowResidents(false);
+  };
+
   if (isLoading) return <div>Loading building...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!building) return <div>Building not found</div>;
@@ -58,16 +89,56 @@ export default function BuildingDetailsPage() {
       <Link href="/buildings" style={{ fontSize: "xx-large" }}>
         🔙
       </Link>
+      <h4 onClick={handleShowResidents} style={{ cursor: "pointer" }}>
+        {" "}
+        {building.residents.length} resident
+        {building.residents.length > 1 && "s"} at
+      </h4>
+      {showResidents && (
+        <div>
+          <ul>
+            {building.residents.map((resident) => (
+              <li key={resident._id}>
+                {resident.firstName
+                  ? `${resident.firstName[0].toUpperCase()}.`
+                  : "-"}{" "}
+                {resident.lastName}{" "}
+                <span style={{ fontSize: "small" }}>
+                  (@{resident.username})
+                </span>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleCloseResidents}>Close</button>
+        </div>
+      )}
       <h2>
         {building.streetName} {building.streetNumber}
       </h2>
       <p>
         {building.zipcode}, {building.city}, {building.country}
       </p>
-      {!edit && <button onClick={handleEdit}>Edit</button>}
+      {!edit &&
+        isAdmin && ( // Show buttons only for admins
+          <>
+            <button onClick={handleEdit}>Edit</button>
+            <button onClick={() => setShowDeleteConfirm(true)}>Remove</button>
+          </>
+        )}
+      {showDeleteConfirm && (
+        <div>
+          <p>Are you sure you want to delete this building?</p>
+          <button onClick={handleDelete}>Confirm</button>
+          <button onClick={() => setShowDeleteConfirm(false)}>Cancel</button>
+        </div>
+      )}
       {edit && (
         <>
-          <EditBuildingForm building={building} />
+          <EditBuildingForm
+            building={building}
+            onUpdate={handleEdit}
+            setBuilding={setBuilding}
+          />
           <button onClick={handleEdit}>Discard changes</button> <br />
         </>
       )}{" "}

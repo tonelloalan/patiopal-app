@@ -1,6 +1,6 @@
 import { useState } from "react";
 
-export default function EditBuildingForm({ building, onUpdate }) {
+export default function EditBuildingForm({ building, onUpdate, setBuilding }) {
   const [streetName, setStreetName] = useState(building.streetName);
   const [streetNumber, setStreetNumber] = useState(building.streetNumber);
   const [zipcode, setZipcode] = useState(building.zipcode);
@@ -27,7 +27,9 @@ export default function EditBuildingForm({ building, onUpdate }) {
 
       if (res.ok) {
         console.log("Building updated successfully!");
-        onUpdate(); // Call the callback to update the parent component's state
+        const updatedData = await res.json(); // Get updated data from response
+        setBuilding(updatedData); // Update the building state
+        onUpdate(); // Call the callback to update the parent if needed
       } else {
         // Handle error from the API
         const errorData = await res.json();
