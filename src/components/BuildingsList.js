@@ -14,7 +14,7 @@ export default function BuildingsList() {
   useEffect(() => {
     const fetchBuildings = async () => {
       if (status === "loading") {
-        return; // Skip fetch if session is loading
+        return <p>Loading...</p>; // Skip fetch if session is loading
       }
 
       const res = await fetch("/api/buildings");
@@ -48,7 +48,9 @@ export default function BuildingsList() {
           <ul>
             {buildings.map((building) => (
               <li key={building._id}>
-                {building.streetName} {building.streetNumber}, {building.city}{" "}
+                <Link href={`/buildings/${building._id.toString()}`}>
+                  {building.streetName} {building.streetNumber}, {building.city}{" "}
+                </Link>
                 {/* Display relevant data */}
               </li>
             ))}
