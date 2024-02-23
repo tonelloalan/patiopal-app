@@ -64,7 +64,7 @@ export default function BuildingDetailsPage() {
       <p>
         {building.zipcode}, {building.city}, {building.country}
       </p>
-      <button onClick={handleEdit}>Edit</button>
+      {!edit && <button onClick={handleEdit}>Edit</button>}
       {edit && (
         <>
           <EditBuildingForm building={building} />

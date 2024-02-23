@@ -1,4 +1,3 @@
-import { Shadows_Into_Light_Two } from "next/font/google";
 import dbConnect from "../../../db/connect";
 import Building from "../../../db/models/Building";
 import { getSession } from "next-auth/react";
