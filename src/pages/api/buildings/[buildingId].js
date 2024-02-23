@@ -13,7 +13,9 @@ export default async function handler(req, res) {
 
   if (req.method === "GET") {
     try {
-      const building = await Building.findById(buildingId);
+      const building = await Building.findById(buildingId).populate(
+        "residents"
+      );
       if (!building) {
         return res.status(404).json({ error: "Building not found" });
       }

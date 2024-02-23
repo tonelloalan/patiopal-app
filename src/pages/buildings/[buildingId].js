@@ -12,12 +12,9 @@ export default function BuildingDetailsPage() {
   const [error, setError] = useState(null);
   const [edit, setEdit] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showResidents, setShowResidents] = useState(false);
 
   const buildingId = router.query.buildingId;
-
-  console.log("BUILDING IS ADMIN: ", building?.isAdmin);
-  console.log("SESSION USER IS ADMIN: ", session?.user._id);
-  console.log("BUILDING ID: ", buildingId);
 
   const handleEdit = () => {
     setEdit(!edit);
@@ -28,8 +25,6 @@ export default function BuildingDetailsPage() {
       const res = await fetch(`/api/buildings/${buildingId}`, {
         method: "DELETE",
       });
-
-      console.log("RESPONSE FE: ", res);
 
       if (res.ok) {
         console.log("Building deleted successfully!");
@@ -55,7 +50,9 @@ export default function BuildingDetailsPage() {
     const fetchBuilding = async () => {
       setIsLoading(true);
       try {
-        const res = await fetch(`/api/buildings/${buildingId}`);
+        const res = await fetch(
+          `/api/buildings/${buildingId}?populate=residents`
+        );
 
         if (!res.ok) {
           throw new Error("Failed to fetch building");
@@ -75,6 +72,14 @@ export default function BuildingDetailsPage() {
     }
   }, [buildingId]);
 
+  const handleShowResidents = () => {
+    setShowResidents(true);
+  };
+
+  const handleCloseResidents = () => {
+    setShowResidents(false);
+  };
+
   if (isLoading) return <div>Loading building...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!building) return <div>Building not found</div>;
@@ -84,13 +89,31 @@ export default function BuildingDetailsPage() {
       <Link href="/buildings" style={{ fontSize: "xx-large" }}>
         🔙
       </Link>
+      <h4 onClick={handleShowResidents} style={{ cursor: "pointer" }}>
+        {" "}
+        {building.residents.length} resident
+        {building.residents.length > 1 && "s"} at
+      </h4>
+      {showResidents && (
+        <div>
+          <ul>
+            {building.residents.map((resident) => (
+              <li key={resident._id}>
+                {resident.firstName
+                  ? `${resident.firstName[0].toUpperCase()}.`
+                  : "-"}{" "}
+                {resident.lastName}{" "}
+                <span style={{ fontSize: "small" }}>
+                  (@{resident.username})
+                </span>
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleCloseResidents}>Close</button>
+        </div>
+      )}
       <h2>
         {building.streetName} {building.streetNumber}
-        <span>
-          {" "}
-          ({building.residents.length} Resident
-          {building.residents.length > 1 && "s"})
-        </span>
       </h2>
       <p>
         {building.zipcode}, {building.city}, {building.country}

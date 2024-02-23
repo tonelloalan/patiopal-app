@@ -43,7 +43,12 @@ export default function BuildingsList() {
         {isLoading ? (
           <p>Loading buildings...</p>
         ) : buildings.length === 0 ? (
-          <p>You don&apos;t have any buildings yet.</p>
+          <>
+            <p>You don&apos;t have any buildings yet.</p>
+            <Link href="/registerBuild">
+              <button>Click here to add one</button>
+            </Link>
+          </>
         ) : (
           <ul>
             {buildings.map((building) => (
