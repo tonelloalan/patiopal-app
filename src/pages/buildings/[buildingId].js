@@ -9,10 +9,15 @@ export default function BuildingDetailsPage() {
   const [building, setBuilding] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [edit, setEdit] = useState(false);
   const buildingId = router.query.buildingId;
 
   console.log("BUILDING IS ADMIN: ", building?.isAdmin);
   console.log("SESSION USER IS ADMIN: ", session?.user._id);
+
+  const handleEdit = () => {
+    setEdit(!edit);
+  };
 
   const isAdmin = building?.isAdmin.some(
     (admin) => admin.$oid === session?.user._id
@@ -58,11 +63,13 @@ export default function BuildingDetailsPage() {
       <p>
         {building.zipcode}, {building.city}, {building.country}
       </p>
-      {isAdmin && ( // Conditional rendering of the Edit button
-        <button onClick={() => router.push(`/buildings/${building._id}/edit`)}>
-          Edit
-        </button>
-      )}
+      <button onClick={handleEdit}>Edit</button>
+      {edit && (
+        <>
+          <button onClick={handleEdit}>Discard changes</button> <br />
+          <p>My conditional rendering works!</p>
+        </>
+      )}{" "}
     </div>
   );
 }
