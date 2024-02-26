@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import EditBuildingForm from "@/components/EditBuildForm";
 
+let updatedBuildingData;
+
 export default function BuildingDetailsPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -125,29 +127,7 @@ export default function BuildingDetailsPage() {
   const handleAddUser = async () => {
     console.log("SEARCH INPUT BEFORE API CALL:", searchInput); // Log searchInput
 
-    // if (!selectedUserId) {
-    //   // Updated check
-    //   console.error("User not found in search results");
-    //   return;
-    // }
-
-    // const selectedUser = searchResults.find(
-    //   (user) => user.username === searchInput
-    // );
-    // console.log("selectedUser:", selectedUser); // Add this line
-
-    // if (!selectedUser) {
-    //   console.error("User not found in search results");
-    //   return;
-    // }
-
     try {
-      // console.log("Data before fetch:", {
-      //   action: "addUser",
-      //   userId: selectedUser,
-      //   // searchTerm: searchInput,
-      // });
-
       const res = await fetch(`/api/buildings/${buildingId}`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -162,10 +142,26 @@ export default function BuildingDetailsPage() {
         console.log("User added successfully!");
         // Update UI - refetch the building, or directly add the user to the residents array
         setSearchInput(""); // Clear the search input after adding
+
+        // Refetch building data:
+        const updatedBuildingData = await res.json();
+
+        console.log("Original Building:", building); // Log for comparison
+        console.log("UPDATED BUILDING DATA:", updatedBuildingData);
+
+        setBuilding(updatedBuildingData); // Update component state
       } else {
         // Handle error from the API
         const errorData = await res.json();
-        console.error("Error adding user to building:", errorData);
+        if (errorData.error === "User not found") {
+          alert("User not found in the database.");
+        } else if (
+          errorData.error === "This person is already a resident here"
+        ) {
+          alert("This person is already a resident.");
+        } else {
+          alert("An error occurred while adding the user.");
+        }
       }
     } catch (e) {
       console.error("Failed to add user to building:", e);
@@ -189,17 +185,29 @@ export default function BuildingDetailsPage() {
       {showResidents && (
         <div>
           <ul>
-            {building.residents.map((resident) => (
-              <li className="residents-list" key={resident._id}>
-                {resident.firstName
-                  ? `${resident.firstName[0].toUpperCase()}.`
-                  : "-"}{" "}
-                {resident.lastName}{" "}
-                <span style={{ fontSize: "small" }}>
-                  (@{resident.username})
-                </span>
-              </li>
-            ))}
+            {updatedBuildingData
+              ? updatedBuildingData.residents.map((resident) => (
+                  <li className="residents-list" key={resident._id}>
+                    {resident.firstName
+                      ? `${resident.firstName[0].toUpperCase()}.`
+                      : "-"}{" "}
+                    {resident.lastName}{" "}
+                    <span style={{ fontSize: "small" }}>
+                      (@{resident.username})
+                    </span>
+                  </li>
+                ))
+              : building.residents.map((resident) => (
+                  <li className="residents-list" key={resident._id}>
+                    {resident.firstName
+                      ? `${resident.firstName[0].toUpperCase()}.`
+                      : "-"}{" "}
+                    {resident.lastName}{" "}
+                    <span style={{ fontSize: "small" }}>
+                      (@{resident.username})
+                    </span>
+                  </li>
+                ))}
           </ul>
           <div>
             <input

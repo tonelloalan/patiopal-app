@@ -114,6 +114,7 @@ export default async function handler(req, res) {
 
         // 2. Check if user is already a resident
         const building = await Building.findById(buildingId); // Need the Building document
+
         const isResident = building.residents.some((residentId) =>
           residentId.equals(user._id)
         );
@@ -125,9 +126,14 @@ export default async function handler(req, res) {
 
         // 3. Add the user to residents
         building.residents.push(user._id);
-        await building.save();
+        await building.save(); // Save the updated building
 
-        res.status(200).json({ message: "User added to building" });
+        // Re-populate the residents!!!
+        const updatedResidentList = await building.populate("residents");
+
+        console.log("Building before response:", updatedResidentList);
+
+        res.status(200).json(updatedResidentList);
       } catch (error) {
         res.status(500).json({ error: "Failed to add user to building" });
       }
