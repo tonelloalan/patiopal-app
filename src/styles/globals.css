@@ -43,6 +43,24 @@ a {
   color: black;
 }
 
+.residents-list {
+  list-style: none;
+}
+
+.addUser-search-item-container {
+  background-color: rgba(255, 255, 255, 0.5);
+  border-radius: 15px;
+  padding: 10px 0 10px 25px;
+  width: 250px;
+  box-shadow: 1px 1px 15px rgba(0, 0, 0, 0.063);
+}
+
+.addUser-search-item {
+  cursor: pointer;
+  list-style: none;
+  margin-bottom: 5px;
+}
+
 /* :root {
   --max-width: 1100px;
   --border-radius: 12px;

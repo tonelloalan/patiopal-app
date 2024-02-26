@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import EditBuildingForm from "@/components/EditBuildForm";
 
+let updatedBuildingData;
+
 export default function BuildingDetailsPage() {
   const { data: session } = useSession();
   const router = useRouter();
@@ -13,6 +15,10 @@ export default function BuildingDetailsPage() {
   const [edit, setEdit] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
   const [showResidents, setShowResidents] = useState(false);
+  const [searchInput, setSearchInput] = useState("");
+  const [searchResults, setSearchResults] = useState([]);
+  const [showSearchResults, setShowSearchResults] = useState(false);
+  const [selectedUserId, setSelectedUserId] = useState(null);
 
   const buildingId = router.query.buildingId;
 
@@ -80,6 +86,88 @@ export default function BuildingDetailsPage() {
     setShowResidents(false);
   };
 
+  const handleSearchChange = async (event) => {
+    setSearchInput(event.target.value);
+
+    if (event.target.value.trim()) {
+      // Only search if there's text
+      try {
+        const res = await fetch(`/api/buildings/${buildingId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            action: "searchUser",
+            searchTerm: event.target.value,
+          }),
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data);
+          setShowSearchResults(true); // Show results
+        }
+      } catch (error) {
+        console.error("Failed to fetch search results:", error);
+      }
+    } else {
+      setSearchResults([]);
+      setShowSearchResults(false); // Hide results
+    }
+  };
+
+  const handleSearchResultClick = (user) => {
+    console.log("CLICKED USERNAME:", user.username); // Log the clicked username
+
+    setSearchInput(user.username);
+    setSearchResults([]);
+    setShowSearchResults(false);
+    setSelectedUserId(user._id);
+  };
+
+  const handleAddUser = async () => {
+    console.log("SEARCH INPUT BEFORE API CALL:", searchInput); // Log searchInput
+
+    try {
+      const res = await fetch(`/api/buildings/${buildingId}`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          action: "addUser",
+          // userId: selectedUser._id,
+          searchTerm: searchInput,
+        }),
+      });
+
+      if (res.ok) {
+        console.log("User added successfully!");
+        // Update UI - refetch the building, or directly add the user to the residents array
+        setSearchInput(""); // Clear the search input after adding
+
+        // Refetch building data:
+        const updatedBuildingData = await res.json();
+
+        console.log("Original Building:", building); // Log for comparison
+        console.log("UPDATED BUILDING DATA:", updatedBuildingData);
+
+        setBuilding(updatedBuildingData); // Update component state
+      } else {
+        // Handle error from the API
+        const errorData = await res.json();
+        if (errorData.error === "User not found") {
+          alert("User not found in the database.");
+        } else if (
+          errorData.error === "This person is already a resident here"
+        ) {
+          alert("This person is already a resident.");
+        } else {
+          alert("An error occurred while adding the user.");
+        }
+      }
+    } catch (e) {
+      console.error("Failed to add user to building:", e);
+    }
+  };
+
   if (isLoading) return <div>Loading building...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!building) return <div>Building not found</div>;
@@ -97,18 +185,53 @@ export default function BuildingDetailsPage() {
       {showResidents && (
         <div>
           <ul>
-            {building.residents.map((resident) => (
-              <li key={resident._id}>
-                {resident.firstName
-                  ? `${resident.firstName[0].toUpperCase()}.`
-                  : "-"}{" "}
-                {resident.lastName}{" "}
-                <span style={{ fontSize: "small" }}>
-                  (@{resident.username})
-                </span>
-              </li>
-            ))}
+            {updatedBuildingData
+              ? updatedBuildingData.residents.map((resident) => (
+                  <li className="residents-list" key={resident._id}>
+                    {resident.firstName
+                      ? `${resident.firstName[0].toUpperCase()}.`
+                      : "-"}{" "}
+                    {resident.lastName}{" "}
+                    <span style={{ fontSize: "small" }}>
+                      (@{resident.username})
+                    </span>
+                  </li>
+                ))
+              : building.residents.map((resident) => (
+                  <li className="residents-list" key={resident._id}>
+                    {resident.firstName
+                      ? `${resident.firstName[0].toUpperCase()}.`
+                      : "-"}{" "}
+                    {resident.lastName}{" "}
+                    <span style={{ fontSize: "small" }}>
+                      (@{resident.username})
+                    </span>
+                  </li>
+                ))}
           </ul>
+          <div>
+            <input
+              type="text"
+              value={searchInput}
+              onChange={handleSearchChange}
+              placeholder="Search by username"
+            />
+            <button onClick={handleAddUser}>Add User</button>
+
+            {showSearchResults && ( // Conditionally display search results
+              <ul className="addUser-search-item-container">
+                {searchResults.map((user) => (
+                  <li
+                    className="addUser-search-item"
+                    key={user._id}
+                    onClick={() => handleSearchResultClick(user)}
+                  >
+                    {user.username}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           <button onClick={handleCloseResidents}>Close</button>
         </div>
       )}
