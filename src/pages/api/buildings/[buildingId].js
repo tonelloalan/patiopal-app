@@ -63,30 +63,63 @@ export default async function handler(req, res) {
       }
     }
   } else if (req.method === "DELETE") {
-    // Authorization (Make sure the user is authorized to delete )
-    if (!session) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+    if (req.body && req.body.residentId) {
+      // Resident deletion
 
-    const building = await Building.findById(buildingId);
-    if (!building) {
-      return res.status(404).json({ error: "Building not found" });
-    }
+      if (!session) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+      const { residentId } = req.body;
 
-    const userIsAdmin = building.isAdmin.some((adminId) =>
-      adminId.equals(session.user._id)
-    );
+      const building = await Building.findById(buildingId);
+      if (!building) {
+        return res.status(404).json({ error: "Building not found" });
+      }
 
-    if (!userIsAdmin) {
-      return res.status(401).json({ error: "Unauthorized" });
-    }
+      const userIsAdmin = building.isAdmin.some((adminId) =>
+        adminId.equals(session.user._id)
+      );
+      if (!userIsAdmin) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
 
-    try {
-      await Building.findByIdAndDelete(buildingId);
+      try {
+        building.residents.pull(residentId);
+        await building.save();
 
-      res.status(200).json({ message: "Building deleted" });
-    } catch (error) {
-      res.status(500).json({ error: "Failed to delete building" });
+        // Optional: Re-populate residents if needed
+        const updatedResidentList = await building.populate("residents");
+
+        res.status(200).json(updatedResidentList);
+      } catch (error) {
+        res.status(500).json({ error: "Failed to remove resident" });
+      }
+    } else {
+      // Authorization (Make sure the user is authorized to delete )
+      if (!session) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      const building = await Building.findById(buildingId);
+      if (!building) {
+        return res.status(404).json({ error: "Building not found" });
+      }
+
+      const userIsAdmin = building.isAdmin.some((adminId) =>
+        adminId.equals(session.user._id)
+      );
+
+      if (!userIsAdmin) {
+        return res.status(401).json({ error: "Unauthorized" });
+      }
+
+      try {
+        await Building.findByIdAndDelete(buildingId);
+
+        res.status(200).json({ message: "Building deleted" });
+      } catch (error) {
+        res.status(500).json({ error: "Failed to delete building" });
+      }
     }
   } else if (req.method === "POST") {
     if (req.body.action === "searchUser") {
