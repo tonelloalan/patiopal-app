@@ -168,6 +168,30 @@ export default function BuildingDetailsPage() {
     }
   };
 
+  const handleDeleteResident = async (residentId) => {
+    if (window.confirm("Are you sure you want to remove this resident?")) {
+      try {
+        const res = await fetch(`/api/buildings/${buildingId}`, {
+          method: "DELETE",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ residentId }),
+        });
+
+        if (res.ok) {
+          console.log("Resident removed successfully!");
+          const updatedBuildingData = await res.json();
+          setBuilding(updatedBuildingData);
+        } else {
+          const errorData = await res.json();
+          console.error("Error removing resident:", errorData);
+          // Handle error (display a message, etc.)
+        }
+      } catch (e) {
+        console.error("Failed to remove resident:", e);
+      }
+    }
+  };
+
   if (isLoading) return <div>Loading building...</div>;
   if (error) return <div>Error: {error}</div>;
   if (!building) return <div>Building not found</div>;
@@ -188,6 +212,14 @@ export default function BuildingDetailsPage() {
             {updatedBuildingData
               ? updatedBuildingData.residents.map((resident) => (
                   <li className="residents-list" key={resident._id}>
+                    {isAdmin && ( // Show 'X' only for admins
+                      <button
+                        className="remove-resident"
+                        onClick={() => handleDeleteResident(resident._id)}
+                      >
+                        X
+                      </button>
+                    )}
                     {resident.firstName
                       ? `${resident.firstName[0].toUpperCase()}.`
                       : "-"}{" "}
@@ -199,6 +231,14 @@ export default function BuildingDetailsPage() {
                 ))
               : building.residents.map((resident) => (
                   <li className="residents-list" key={resident._id}>
+                    {isAdmin && ( // Show 'X' only for admins
+                      <button
+                        className="remove-resident"
+                        onClick={() => handleDeleteResident(resident._id)}
+                      >
+                        X
+                      </button>
+                    )}
                     {resident.firstName
                       ? `${resident.firstName[0].toUpperCase()}.`
                       : "-"}{" "}
