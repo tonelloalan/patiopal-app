@@ -79,6 +79,37 @@ button {
   margin: 2px;
 }
 
+.welcome-header {
+  margin: 15px 0 10px 0;
+}
+
+.welcome-name {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border: double 7px white;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: x-large;
+  transform: rotate(-3deg);
+  font-family: Elronet;
+  border-radius: 10px;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-logout-button {
+  background-color: rgb(110, 0, 0);
+  width: fit-content;
+  align-self: center;
+}
+
 .createAccountHeader {
   cursor: pointer;
 }

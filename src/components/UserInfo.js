@@ -11,18 +11,14 @@ export default function UserInfo() {
 
   return (
     <div className="userInfoContainer">
-      <div className="userInfo">
-        <div>
-          Name:{" "}
-          <span>
-            {session?.user?.firstName} {session?.user?.lastName}
-          </span>
-        </div>
-        <div>
-          Username: <span>{session?.user?.username}</span>
-        </div>
-        <button onClick={() => signOut()}>Log out</button>
-      </div>
+      <h3 className="welcome-header">WELCOME</h3>
+      <span className="welcome-name">
+        {session?.user?.firstName[0]}. {session?.user?.lastName}
+      </span>
+
+      {/* <div>
+        Username: <span>{session?.user?.username}</span>
+      </div> */}
     </div>
   );
 }
