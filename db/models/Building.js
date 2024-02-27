@@ -10,7 +10,6 @@ const buildingSchema = new Schema({
   country: { type: String, required: [true, "Country is required"] },
   residents: [{ type: Schema.Types.ObjectId, ref: "User" }],
   isAdmin: [{ type: Schema.Types.ObjectId, ref: "User" }],
-  posts: [{ type: Schema.Types.ObjectId, ref: "Post" }],
 });
 
 // Create a unique compound index to prevent duplicate buildings

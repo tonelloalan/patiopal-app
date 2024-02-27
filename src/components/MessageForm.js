@@ -26,17 +26,20 @@ export default function MessageForm({ buildingId }) {
         credentials: "include", // Include user credentials
       });
 
+      console.log("RESPONSE: ", response);
+
       if (response.ok) {
         // ... success, clear the form ...
         console.log("New post submitted successfully!");
         const form = event.target; // Access the form element
-        form.reset(); // Reset the form
+        console.log("FORM: ", form);
       } else {
         // ... handle error, display message to user ...
       }
     } catch (error) {
       console.error("Error submitting post:", error);
     }
+    form.reset(); // Reset the form
   };
 
   return (

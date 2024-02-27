@@ -32,6 +32,9 @@ export default async function handler(req, res) {
       });
       await newPost.save();
 
+      console.log("BUILDING ID BE (UPDATE): ", buildingId);
+      console.log("BUILDING ID FILTER QUERY", buildingIdFilterQuery);
+
       // Update the Building
       const building = await Building.findByIdAndUpdate(
         buildingId,
@@ -48,19 +51,23 @@ export default async function handler(req, res) {
     }
   } else if (req.method === "GET") {
     try {
-      const building = await Building.findById(buildingId).populate({
-        path: "posts", // Name of the field to populate
-        populate: {
-          path: "author", // Populate the 'author' field within each post
-          select: "firstName lastName username", // Select specific fields
-        },
-      });
+      const building = await Post.find({ building: buildingId }).populate(
+        "author"
+      );
+      //.populate({
+      //     path: "posts", // Name of the field to populate
+      //     populate: {
+      //       path: "author", // Populate the 'author' field within each post
+      //       select: "firstName lastName username", // Select specific fields
+
+      //   });
+      console.log("BUILDING POSTS: ", building);
 
       if (!building) {
         return res.status(404).json({ error: "Building not found" });
       }
 
-      res.status(200).json(building.posts);
+      res.status(200).json(building);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: "Error fetching posts" });

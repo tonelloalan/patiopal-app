@@ -16,10 +16,7 @@ export default async function handler(req, res) {
     try {
       await dbConnect(); // DB connection is essential before proceeding to POST new information to itself
 
-      const newBuilding = new Building({
-        ...req.body, // Spread the form data
-        posts: [], // Initialize the posts array as empty
-      }); // Assuming form data in req.body, this gather the information about the new building
+      const newBuilding = new Building(req.body); // Assuming form data in req.body, this gather the information about the new building
 
       // Add User as Resident and Admin:
       const user = await User.findById(userId); // Finds the logged in user
