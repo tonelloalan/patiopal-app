@@ -25,6 +25,7 @@
   gap: 1px;
   margin: 15px 0;
 }
+
 .userInfo span {
-  font-weight: bold;
+  font-weight: 500;
 }

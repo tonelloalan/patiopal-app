@@ -305,6 +305,10 @@ export default function BuildingDetailsPage() {
           <button onClick={handleEdit}>Discard changes</button> <br />
         </>
       )}{" "}
+      <br />
+      <a href={`/buildings/${buildingId}/messageBoard`}>
+        <h2>Go to message board</h2>
+      </a>
     </div>
   );
 }
