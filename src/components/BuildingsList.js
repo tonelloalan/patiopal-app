@@ -52,14 +52,12 @@ export default function BuildingsList() {
         ) : (
           <ul className="buildingsList-ul">
             {buildings.map((building) => (
-              <li key={building._id}>
+              <li className="buildingsList-item" key={building._id}>
                 <Link href={`/buildings/${building._id.toString()}`}>
-                  <h3>
-                    {building.streetName} {building.streetNumber},{" "}
-                    {building.city}{" "}
-                  </h3>
+                  <h2>{building.streetNumber}</h2>
+                  <h3>{building.streetName} </h3>
+                  <h4>{building.city}</h4>
                 </Link>
-                {/* Display relevant data */}
               </li>
             ))}
           </ul>

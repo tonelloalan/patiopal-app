@@ -23,7 +23,7 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url(/expandedpatio.jpg);
+  background-image: url(/pic03.jpeg);
   background-position: center;
   background-size: cover;
 }
@@ -31,7 +31,7 @@
 body {
   /* background-color: #ffffff76; */
   background: radial-gradient(ellipse at top, #fffffff7, transparent),
-    radial-gradient(ellipse at bottom, #fff7ccb5, transparent);
+    radial-gradient(ellipse at bottom, #ffffffcc, transparent);
   backdrop-filter: blur(30px);
   border-radius: 25px;
   box-shadow: 1px 11px 20px rgba(0, 0, 0, 0.25);
@@ -106,10 +106,39 @@ button {
   flex-direction: column;
 }
 
+.new-building-button {
+  transition: ease all 0.1s;
+}
+.new-building-button:hover {
+  transform: scale(1.03);
+}
+.new-building-button:active {
+  transform: scale(0.97);
+}
+
+.my-buildings-button {
+  transition: ease all 0.1s;
+}
+.my-buildings-button:hover {
+  transform: scale(1.03);
+}
+.my-buildings-button:active {
+  transform: scale(0.97);
+}
+
 .home-logout-button {
   background-color: rgb(110, 0, 0);
   width: fit-content;
   align-self: center;
+  transition: all ease 0.1s;
+}
+
+.home-logout-button:hover {
+  background-color: rgb(147, 1, 1);
+}
+
+.home-logout-button:active {
+  background-color: rgb(194, 2, 2);
 }
 
 .createAccountHeader {
@@ -264,4 +293,50 @@ button {
   list-style-type: none;
   padding: 2px;
   margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.buildingsList-item {
+  border: double white 8px;
+  border-radius: 15px;
+  width: fit-content;
+  min-width: 200px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  transition: all ease 0.2s;
+  transform: rotate(-0.9deg);
+  background: radial-gradient(
+    circle,
+    rgba(31, 31, 31, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+.buildingsList-item:hover {
+  transform: rotate(0deg);
+  background: radial-gradient(circle, rgb(47, 59, 85) 0%, rgb(1, 1, 1) 100%);
+
+  transform: scale(1.02);
+  box-shadow: 0 8px 6px rgba(0, 0, 0, 0.1);
+}
+
+.createAccountHeader h3 {
+  color: black;
+}
+
+.buildingsList-item h2,
+.buildingsList-item h3,
+.buildingsList-item h4 {
+  margin: 0;
+  padding: 5px;
+  color: white;
+  text-align: center;
+}
+
+.buildingsList-item h2 {
+  font-size: xx-large;
+  margin: 0;
+  padding: 0;
 }

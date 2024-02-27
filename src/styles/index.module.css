@@ -25,6 +25,10 @@
   font-size: xxx-large;
 }
 
+.createAccountHeader h3 {
+  color: black;
+}
+
 /* .main {
   display: flex;
   flex-direction: column;

@@ -11,6 +11,7 @@ export default function Home() {
         <Link href={"/registerBuild"}>
           {/* <strong>Register a new Building</strong> */}
           <Image
+            className="new-building-button"
             src={"/newBuilding.png"}
             alt="new building button"
             width={200}
@@ -22,6 +23,7 @@ export default function Home() {
         <Link href={"/buildings"}>
           {/* <strong>Register a new Building</strong> */}
           <Image
+            className="my-buildings-button"
             src={"/myBuildings.png"}
             alt="my buildings button"
             width={200}
