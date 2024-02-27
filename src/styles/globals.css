@@ -29,14 +29,17 @@
 }
 
 body {
-  background-color: #ffffff65;
-  backdrop-filter: blur(20px);
+  /* background-color: #ffffff76; */
+  background: radial-gradient(ellipse at top, #fffffff7, transparent),
+    radial-gradient(ellipse at bottom, #fff7ccb5, transparent);
+  backdrop-filter: blur(30px);
   border-radius: 25px;
   box-shadow: 1px 11px 20px rgba(0, 0, 0, 0.25);
   max-width: 600px;
   min-width: 330px;
   margin: 15px;
   padding: 15px 15px 30px 15px;
+  border: solid black 2px;
 }
 
 input {
@@ -96,7 +99,6 @@ button {
   font-size: x-large;
   transform: rotate(-3deg);
   font-family: Elronet;
-  border-radius: 10px;
 }
 
 .home-container {
@@ -117,15 +119,6 @@ button {
 .formContainer {
   display: grid;
   place-items: center;
-}
-
-.loginForm {
-  background-color: rgba(245, 245, 245, 0.902);
-  backdrop-filter: blur(5);
-  padding: 25px 15px;
-  border-top: solid 7px rgba(0, 0, 0, 0.489);
-  border-radius: 25px;
-  box-shadow: 0px 5px 19px hsla(0, 0%, 53%, 0.2);
 }
 
 .registerLinkPhrase {
