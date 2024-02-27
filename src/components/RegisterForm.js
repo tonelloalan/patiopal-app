@@ -1,5 +1,4 @@
 "use client";
-import styles from "@/styles/RegisterForm.module.css";
 import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
@@ -114,10 +113,10 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className={styles.formContainer}>
-      <div className={styles.loginForm}>
+    <div className="formContainer">
+      <div className="loginForm">
         <h2>Register</h2>
-        <form onSubmit={handleSubmit} className={styles.formDetails}>
+        <form onSubmit={handleSubmit} className="formDetails">
           <input
             onChange={(e) => setFirstName(e.target.value)} // this stores the value inside this input field into the state
             type="text"
@@ -162,11 +161,10 @@ export default function RegisterForm() {
           ></input>
           <button>Register</button>
 
-          {error && <div className={styles.errorMessage}>{error}</div>}
+          {error && <div className="errorMessage">{error}</div>}
 
-          <Link className={styles.registerLinkPhrase} href={"/"}>
-            Already have an account?{" "}
-            <span className={styles.registerLink}>Login</span>
+          <Link className="registerLinkPhrase" href={"/"}>
+            Already have an account? <span className="registerLink">Login</span>
           </Link>
         </form>
       </div>

@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
-import styles from "@/styles/LoginForm.module.css";
 import Link from "next/link";
 import { signIn, useSession } from "next-auth/react";
 
@@ -49,14 +48,14 @@ export default function LoginForm() {
 
   return (
     <>
-      <h3 className={styles.createAccountHeader} onClick={toggleSignUp}>
+      <h3 className="createAccountHeader" onClick={toggleSignUp}>
         LOGIN
       </h3>
       {showForm && (
-        <div className={styles.formContainer}>
-          <div className={styles.loginForm}>
+        <div className="formContainer">
+          <div className="loginForm">
             <h2>Enter your details</h2>
-            <form onSubmit={handleSubmit} className={styles.formDetails}>
+            <form onSubmit={handleSubmit} className="formDetails">
               <input
                 onChange={(e) => setUsername(e.target.value)}
                 type="text"
@@ -74,10 +73,10 @@ export default function LoginForm() {
 
               <button>Login</button>
 
-              {error && <div className={styles.errorMessage}>{error}</div>}
-              <Link className={styles.registerLinkPhrase} href={"/register"}>
+              {error && <div className="errorMessage">{error}</div>}
+              <Link className="registerLinkPhrase" href={"/register"}>
                 Don&apos;t have an account?{" "}
-                <span className={styles.registerLink}>Register</span>
+                <span className="registerLink">Register</span>
               </Link>
             </form>
           </div>

@@ -1,8 +1,24 @@
+@font-face {
+  font-family: "Elronet";
+  src: url(/Elronm.ttf);
+}
+
+@font-face {
+  font-family: "ElronetBold";
+  src: url(/Elronp.ttf);
+}
+
+@font-face {
+  font-family: "RedHatDisplay";
+  src: url(/RedHatDisplay-VariableFont_wght.ttf);
+}
+
 .main {
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
+  font-family: RedHatDisplay;
 }
 
 .main h1 {

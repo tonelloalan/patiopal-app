@@ -1,6 +1,5 @@
 "use client";
 
-import styles from "@/styles/RegisterForm.module.css";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
@@ -85,10 +84,10 @@ export default function RegisterBuildForm() {
       <Link href="/home" style={{ fontSize: "xx-large" }}>
         🔙
       </Link>
-      <div className={styles.formContainer}>
-        <div className={styles.loginForm}>
+      <div className="formContainer">
+        <div className="loginForm">
           <h2>Register new Building</h2>
-          <form onSubmit={handleSubmit} className={styles.formDetails}>
+          <form onSubmit={handleSubmit} className="formDetails">
             <input
               onChange={(e) => setStreetName(e.target.value)}
               type="text"
@@ -121,7 +120,7 @@ export default function RegisterBuildForm() {
               <option value={"Germany"}>Germany</option>
             </select>
             <button>Register Building</button>
-            {error && <div className={styles.errorMessage}>{error}</div>}
+            {error && <div className="errorMessage">{error}</div>}
           </form>
         </div>
       </div>

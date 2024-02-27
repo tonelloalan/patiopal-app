@@ -50,10 +50,12 @@ export default async function handler(req, res) {
         { new: true, runValidators: true } // Return the updated document, run schema validation
       );
 
+      const updatedResidentList = await updatedBuilding.populate("residents");
+
       if (!updatedBuilding) {
         return res.status(404).json({ error: "Building not found" });
       }
-      res.status(200).json(updatedBuilding);
+      res.status(200).json(updatedResidentList);
     } catch (error) {
       if (error.name === "ValidationError") {
         // Handle Mongoose validation errors
