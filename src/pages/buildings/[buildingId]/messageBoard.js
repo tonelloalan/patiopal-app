@@ -12,18 +12,13 @@ export default function MessageBoard() {
   const router = useRouter();
   const buildingId = router.query.buildingId;
 
-  const { data: session, status } = useSession();
-
-  console.log("CLIENT-SIDE SESSION FE: ", session);
-  console.log("SESSION STATUS FE: ", status);
-  console.log("BUILDING ID FE: ", buildingId);
+  const { data: session } = useSession();
 
   const fetchPosts = async () => {
     setIsLoading(true);
     try {
       const response = await fetch(`/api/buildings/${buildingId}/posts`);
 
-      console.log("RESPONSE FE: ", response);
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
@@ -35,52 +30,48 @@ export default function MessageBoard() {
       setIsLoading(false);
     }
   };
+
   useEffect(() => {
     if (buildingId) {
       fetchPosts();
     }
   }, [buildingId]); // Run the effect when the buildingId changes
 
-  const refreshPosts = async () => {
+  async function refreshPosts() {
     setIsLoading(true);
     setError(null); // Reset error state on refresh
     try {
-      const fetchPosts = async () => {
-        setIsLoading(true);
-        try {
-          const response = await fetch(`/api/buildings/${buildingId}/posts`);
+      console.log("Refresh initiated..."); // Check if the function is called
+      const response = await fetch(`/api/buildings/${buildingId}/posts`);
+      console.log("API Response:", response); // Inspect the response
 
-          console.log("RESPONSE FE:====== ", response);
-          //   if (!response.ok) {
-          //     throw new Error("Failed to fetch posts");
-          //   }
-          const data = await response.json();
-          console.log("DATA::::::::::::::::::: ", data);
-          setPosts(data);
-          fetchPosts();
-        } catch (error) {
-          setError(error.message || "Something went wrong");
-        } finally {
-          setIsLoading(false);
-          fetchPosts();
-        }
-      };
+      if (!response.ok) {
+        throw new Error("Failed to fetch posts");
+      }
+
+      const data = await response.json();
+      console.log("Fetched Data:", data); // Verify the received data
+
+      setPosts(data);
+      // Scroll to the bottom after updating posts:
     } catch (error) {
-      // ... handle error ...
+      setError(error.message || "Something went wrong");
     } finally {
       setIsLoading(false);
     }
-  };
+  }
 
   return (
     <>
-      <BackButton />{" "}
-      <p
-        style={{ fontSize: "xx-large", marginTop: "0px", cursor: "pointer" }}
-        onClick={refreshPosts}
-      >
-        🔄
-      </p>
+      <div className="messageBoard-navBar">
+        <BackButton />{" "}
+        <p
+          style={{ fontSize: "xx-large", marginTop: "0px", cursor: "pointer" }}
+          onClick={refreshPosts}
+        >
+          🔄
+        </p>
+      </div>
       {isLoading && <p>Loading posts...</p>}
       {error && <p className="error-message">{error}</p>}
       {!isLoading && !error && posts.length > 0 && (

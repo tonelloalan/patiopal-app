@@ -16,7 +16,6 @@ export default function MessageForm({ buildingId }) {
     event.preventDefault();
 
     // ... form validation ...
-    console.log("BUILDING ID FE COMP:", buildingId);
 
     try {
       const response = await fetch(`/api/buildings/${buildingId}/posts`, {
@@ -26,13 +25,10 @@ export default function MessageForm({ buildingId }) {
         credentials: "include", // Include user credentials
       });
 
-      console.log("RESPONSE: ", response);
-
       if (response.ok) {
         // ... success, clear the form ...
         console.log("New post submitted successfully!");
         const form = event.target; // Access the form element
-        console.log("FORM: ", form);
       } else {
         // ... handle error, display message to user ...
       }
@@ -43,7 +39,7 @@ export default function MessageForm({ buildingId }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="posts-form" onSubmit={handleSubmit}>
       <textarea
         name="content"
         placeholder="What's on your mind?"
@@ -55,7 +51,9 @@ export default function MessageForm({ buildingId }) {
       />
       <input type="hidden" name="buildingId" value={buildingId} />{" "}
       {/* Hidden field */}
-      <button type="submit">Post</button>
+      <button className="post-submit-button" type="submit">
+        Post
+      </button>
     </form>
   );
 }

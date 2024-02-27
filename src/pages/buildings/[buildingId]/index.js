@@ -79,7 +79,7 @@ export default function BuildingDetailsPage() {
   }, [buildingId]);
 
   const handleShowResidents = () => {
-    setShowResidents(true);
+    setShowResidents(!showResidents);
   };
 
   const handleCloseResidents = () => {
@@ -231,6 +231,7 @@ export default function BuildingDetailsPage() {
                 ))
               : building.residents.map((resident) => (
                   <li className="residents-list" key={resident._id}>
+                    <div></div>
                     {isAdmin && ( // Show 'X' only for admins
                       <button
                         className="remove-resident"
@@ -272,7 +273,6 @@ export default function BuildingDetailsPage() {
               </ul>
             )}
           </div>
-          <button onClick={handleCloseResidents}>Close</button>
         </div>
       )}
       <h2>
