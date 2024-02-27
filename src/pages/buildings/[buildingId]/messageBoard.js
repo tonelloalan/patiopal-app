@@ -86,8 +86,21 @@ export default function MessageBoard() {
       {!isLoading && !error && posts.length > 0 && (
         <ul className="posts-ul">
           {posts.map((post) => (
-            <li key={post._id} className="post-li">
-              <p className="post-li-author">
+            <li
+              key={post._id}
+              className={
+                post.author._id === session.user._id
+                  ? "post-li post-li-self"
+                  : "post-li"
+              }
+            >
+              <p
+                className={
+                  post.author._id === session.user._id
+                    ? "post-li-author-currentUser"
+                    : "post-li-author-anotherUser"
+                }
+              >
                 <span className="post-li-author-name">
                   {post.author.firstName
                     ? `${post.author.firstName[0].toUpperCase()}.`
@@ -96,7 +109,15 @@ export default function MessageBoard() {
                 </span>{" "}
                 on {new Date(post.timestamp).toLocaleString()}
               </p>
-              <p className="post-li-content">{post.content}</p>
+              <p
+                className={
+                  post.author._id === session.user._id
+                    ? "post-li-content-currentUser"
+                    : "post-li-content-anotherUser"
+                }
+              >
+                {post.content}
+              </p>
             </li>
           ))}
         </ul>
