@@ -58,16 +58,6 @@ textarea {
   border-radius: 25px;
 }
 
-button {
-  background-color: rgb(140, 150, 120);
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  border: none;
-  border-radius: 8px;
-  padding: 12px;
-}
-
 select {
   min-width: 250px;
   border: solid 1px lightgray;
@@ -106,6 +96,27 @@ a {
   height: 20px;
   margin: 0 4px 3px 0;
   cursor: pointer;
+}
+
+.posts-ul {
+  list-style-type: none;
+}
+
+.post-li-author {
+  margin: 5px;
+  font-size: x-small;
+  text-align: right;
+}
+.post-li-author-name {
+  font-weight: bold;
+}
+
+.post-li-content {
+  background-color: rgba(255, 255, 255, 0.931);
+  border-radius: 15px;
+  padding: 5px 10px;
+  margin-top: 0;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.041);
 }
 
 /* :root {

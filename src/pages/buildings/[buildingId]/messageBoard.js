@@ -84,17 +84,19 @@ export default function MessageBoard() {
       {isLoading && <p>Loading posts...</p>}
       {error && <p className="error-message">{error}</p>}
       {!isLoading && !error && posts.length > 0 && (
-        <ul>
+        <ul className="posts-ul">
           {posts.map((post) => (
-            <li key={post._id}>
-              <p>{post.content}</p>
-              <p>
-                {post.author.firstName
-                  ? `${post.author.firstName[0].toUpperCase()}.`
-                  : "-"}{" "}
-                {post.author.lastName} on{" "}
-                {new Date(post.timestamp).toLocaleString()}
+            <li key={post._id} className="post-li">
+              <p className="post-li-author">
+                <span className="post-li-author-name">
+                  {post.author.firstName
+                    ? `${post.author.firstName[0].toUpperCase()}.`
+                    : "-"}{" "}
+                  {post.author.lastName}
+                </span>{" "}
+                on {new Date(post.timestamp).toLocaleString()}
               </p>
+              <p className="post-li-content">{post.content}</p>
             </li>
           ))}
         </ul>
