@@ -29,14 +29,17 @@
 }
 
 body {
-  background-color: #ffffff65;
-  backdrop-filter: blur(20px);
+  /* background-color: #ffffff76; */
+  background: radial-gradient(ellipse at top, #fffffff7, transparent),
+    radial-gradient(ellipse at bottom, #fff7ccb5, transparent);
+  backdrop-filter: blur(30px);
   border-radius: 25px;
   box-shadow: 1px 11px 20px rgba(0, 0, 0, 0.25);
   max-width: 600px;
   min-width: 330px;
   margin: 15px;
   padding: 15px 15px 30px 15px;
+  border: solid black 2px;
 }
 
 input {
@@ -79,6 +82,36 @@ button {
   margin: 2px;
 }
 
+.welcome-header {
+  margin: 15px 0 10px 0;
+}
+
+.welcome-name {
+  background-color: black;
+  color: white;
+  padding: 5px 10px;
+  margin-top: 0;
+  margin-bottom: 20px;
+  border: double 7px white;
+  box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.2);
+  font-family: "Courier New", Courier, monospace;
+  font-weight: bold;
+  font-size: x-large;
+  transform: rotate(-3deg);
+  font-family: Elronet;
+}
+
+.home-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.home-logout-button {
+  background-color: rgb(110, 0, 0);
+  width: fit-content;
+  align-self: center;
+}
+
 .createAccountHeader {
   cursor: pointer;
 }
@@ -86,15 +119,6 @@ button {
 .formContainer {
   display: grid;
   place-items: center;
-}
-
-.loginForm {
-  background-color: rgba(245, 245, 245, 0.902);
-  backdrop-filter: blur(5);
-  padding: 25px 15px;
-  border-top: solid 7px rgba(0, 0, 0, 0.489);
-  border-radius: 25px;
-  box-shadow: 0px 5px 19px hsla(0, 0%, 53%, 0.2);
 }
 
 .registerLinkPhrase {
