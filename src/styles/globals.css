@@ -17,21 +17,28 @@
   font-family: RedHatDisplay;
   display: flex;
   flex-direction: column;
-  height: 100vh;
-  background-size: cover;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url(/pic03.jpeg);
-  background-position: center;
-  background-size: cover;
+  background-image: url(/bg01-color-small.jpg);
+  background-size: 250px;
+  position: relative; /* Required for absolute positioning of overlay */
+}
+
+.root::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5); /* 50% opacity */
 }
 
 body {
-  /* background-color: #ffffff76; */
   background: radial-gradient(ellipse at top, #fffffff7, transparent),
-    radial-gradient(ellipse at bottom, #ffffffcc, transparent);
+    radial-gradient(ellipse at bottom, #ffffffa0, transparent);
   backdrop-filter: blur(30px);
   border-radius: 25px;
   box-shadow: 1px 11px 20px rgba(0, 0, 0, 0.25);
@@ -43,10 +50,10 @@ body {
 }
 
 input {
-  min-width: 250px;
+  min-width: 300px;
   border: solid 1px lightgray;
   padding: 5px 12px;
-  margin: 2px 0;
+  margin: 10px 0;
   background-color: rgba(255, 255, 255, 0.4);
   border-radius: 8px;
 }
@@ -80,6 +87,11 @@ button {
   border-radius: 15px;
   padding: 8px 10px;
   margin: 2px;
+  transition: all ease 0.2s;
+}
+
+button:hover {
+  transform: scale(1.05);
 }
 
 .welcome-header {
@@ -229,6 +241,8 @@ button {
   height: 550px;
   overflow-y: scroll;
   padding: 0 10px;
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .post-li-author-currentUser {
@@ -317,7 +331,6 @@ button {
 .buildingsList-item:hover {
   transform: rotate(0deg);
   background: radial-gradient(circle, rgb(47, 59, 85) 0%, rgb(1, 1, 1) 100%);
-
   transform: scale(1.02);
   box-shadow: 0 8px 6px rgba(0, 0, 0, 0.1);
 }
@@ -330,7 +343,7 @@ button {
 .buildingsList-item h3,
 .buildingsList-item h4 {
   margin: 0;
-  padding: 5px;
+  padding: 0px;
   color: white;
   text-align: center;
 }
@@ -339,4 +352,62 @@ button {
   font-size: xx-large;
   margin: 0;
   padding: 0;
+}
+.buildingsList-item h4 {
+  margin-bottom: 5px;
+}
+
+.message-board {
+  transform: scale(0.8);
+  transition: ease all 0.1s;
+}
+.message-board:hover {
+  transform: scale(0.85);
+}
+.message-board:active {
+  transform: scale(0.83);
+}
+
+.residents-at {
+  padding-bottom: 0;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.building-address-street {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: white;
+  padding: 9px 15px;
+  margin-inline: auto;
+  border: double white 8px;
+  border-radius: 15px;
+  width: fit-content;
+  min-width: 200px;
+  margin-bottom: 15px;
+  box-shadow: 0 5px 5px rgba(0, 0, 0, 0.1);
+  transition: all ease 0.2s;
+  transform: rotate(-0.9deg);
+  background: radial-gradient(
+    circle,
+    rgba(31, 31, 31, 1) 0%,
+    rgba(0, 0, 0, 1) 100%
+  );
+}
+
+.building-address-street h1,
+.building-address-street p {
+  padding: 0;
+  margin: 0;
+}
+
+.edit-remove-building-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.edit-building-form {
+  display: flex;
+  flex-direction: column;
 }

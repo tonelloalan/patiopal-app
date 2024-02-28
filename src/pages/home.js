@@ -2,10 +2,12 @@ import UserInfo from "@/components/UserInfo";
 import Image from "next/image";
 import Link from "next/link";
 import { signOut } from "next-auth/react";
+import Logo from "@/components/Logo";
 
 export default function Home() {
   return (
     <div className="home-container">
+      <Logo />
       <UserInfo />
       <div className="userInfoContainer">
         <Link href={"/registerBuild"}>

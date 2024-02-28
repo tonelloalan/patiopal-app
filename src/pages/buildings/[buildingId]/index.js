@@ -3,6 +3,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import EditBuildingForm from "@/components/EditBuildForm";
+import Image from "next/image";
+import Logo from "@/components/Logo";
 
 let updatedBuildingData;
 
@@ -198,16 +200,22 @@ export default function BuildingDetailsPage() {
 
   return (
     <div>
-      <Link href="/buildings" style={{ fontSize: "xx-large" }}>
-        🔙
+      <Logo />
+      <br />
+      <Link href={"/buildings"} style={{ fontSize: "xx-large" }}>
+        ⬅
       </Link>
-      <h4 onClick={handleShowResidents} style={{ cursor: "pointer" }}>
+      <h4
+        className="residents-at"
+        onClick={handleShowResidents}
+        style={{ cursor: "pointer" }}
+      >
         {" "}
         {building.residents.length} resident
         {building.residents.length > 1 && "s"} at
       </h4>
       {showResidents && (
-        <div>
+        <div className="building-details-container">
           <ul>
             {updatedBuildingData
               ? updatedBuildingData.residents.map((resident) => (
@@ -275,18 +283,20 @@ export default function BuildingDetailsPage() {
           </div>
         </div>
       )}
-      <h2>
-        {building.streetName} {building.streetNumber}
-      </h2>
-      <p>
-        {building.zipcode}, {building.city}, {building.country}
-      </p>
+      <div className="building-address-street">
+        <h1>
+          {building.streetName} {building.streetNumber}
+        </h1>
+        <p>
+          {building.zipcode}, {building.city}, {building.country}
+        </p>
+      </div>
       {!edit &&
         isAdmin && ( // Show buttons only for admins
-          <>
+          <div className="edit-remove-building-container">
             <button onClick={handleEdit}>Edit</button>
             <button onClick={() => setShowDeleteConfirm(true)}>Remove</button>
-          </>
+          </div>
         )}
       {showDeleteConfirm && (
         <div>
@@ -306,9 +316,17 @@ export default function BuildingDetailsPage() {
         </>
       )}{" "}
       <br />
-      <a href={`/buildings/${buildingId}/messageBoard`}>
-        <h2>Go to message board</h2>
-      </a>
+      <div className="userInfoContainer">
+        <Link href={`/buildings/${buildingId}/messageBoard`}>
+          <Image
+            className="message-board"
+            src={"/messageBoard.png"}
+            alt="message board button"
+            width={200}
+            height={200}
+          />
+        </Link>
+      </div>
     </div>
   );
 }

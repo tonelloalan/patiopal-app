@@ -41,7 +41,7 @@ export default function EditBuildingForm({ building, onUpdate, setBuilding }) {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form className="edit-building-form" onSubmit={handleSubmit}>
       <div>
         <label htmlFor="streetName">Street Name:</label>
         <br />

@@ -3,16 +3,29 @@ import { useState, useEffect } from "react";
 import BackButton from "@/components/BackButton";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
+import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function MessageBoard() {
   const [posts, setPosts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
+  const updatePosts = (post) => {
+    console.log("UPDATE: ", post);
+    setPosts((current) => [post, ...current]);
+  };
+
+  console.log(posts);
+
   const router = useRouter();
   const buildingId = router.query.buildingId;
 
   const { data: session } = useSession();
+
+  function refreshPageOnClick() {
+    window.location.reload(false);
+  }
 
   const fetchPosts = async () => {
     setIsLoading(true);
@@ -23,6 +36,7 @@ export default function MessageBoard() {
         throw new Error("Failed to fetch posts");
       }
       const data = await response.json();
+      data.reverse();
       setPosts(data);
     } catch (error) {
       setError(error.message || "Something went wrong");
@@ -40,20 +54,17 @@ export default function MessageBoard() {
   async function refreshPosts() {
     setIsLoading(true);
     setError(null); // Reset error state on refresh
+
     try {
-      console.log("Refresh initiated..."); // Check if the function is called
       const response = await fetch(`/api/buildings/${buildingId}/posts`);
-      console.log("API Response:", response); // Inspect the response
 
       if (!response.ok) {
         throw new Error("Failed to fetch posts");
       }
 
       const data = await response.json();
-      console.log("Fetched Data:", data); // Verify the received data
 
       setPosts(data);
-      // Scroll to the bottom after updating posts:
     } catch (error) {
       setError(error.message || "Something went wrong");
     } finally {
@@ -63,13 +74,15 @@ export default function MessageBoard() {
 
   return (
     <>
+      <Logo />
+      <br />
       <div className="messageBoard-navBar">
         <BackButton />{" "}
         <p
+          onClick={refreshPageOnClick}
           style={{ fontSize: "xx-large", marginTop: "0px", cursor: "pointer" }}
-          onClick={refreshPosts}
         >
-          🔄
+          ⬇
         </p>
       </div>
       {isLoading && <p>Loading posts...</p>}
@@ -119,7 +132,7 @@ export default function MessageBoard() {
           conversation!
         </p>
       )}
-      <MessageForm buildingId={buildingId} />
+      <MessageForm buildingId={buildingId} updatePosts={updatePosts} />
     </>
   );
 }
