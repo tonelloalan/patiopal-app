@@ -30,10 +30,14 @@ export default async function handler(req, res) {
         building: buildingId,
         author: session.user._id,
       });
-      await newPost.save();
+      const savedPost = await newPost.save();
+
+      const findPost = await Post.findById(savedPost._id).populate("author");
+
+      console.log(findPost);
 
       console.log("BUILDING ID BE (UPDATE): ", buildingId);
-      console.log("BUILDING ID FILTER QUERY", buildingIdFilterQuery);
+      // console.log("BUILDING ID FILTER QUERY", buildingIdFilterQuery);
 
       // Update the Building
       const building = await Building.findByIdAndUpdate(
@@ -45,9 +49,10 @@ export default async function handler(req, res) {
       // ... handle success ... //
       return res
         .status(200)
-        .json({ message: "New post submitted successfully." });
+        .json({ message: "New post submitted successfully.", post: findPost });
     } catch (error) {
       // ... handle error ... //
+      console.log(error);
     }
   } else if (req.method === "GET") {
     try {

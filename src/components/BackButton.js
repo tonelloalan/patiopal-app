@@ -12,7 +12,7 @@ export default function BackButton() {
       }}
       onClick={() => router.back()}
     >
-      🔙
+      ⬅
     </p>
   );
 }

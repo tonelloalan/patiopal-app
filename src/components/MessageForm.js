@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 
-export default function MessageForm({ buildingId }) {
+export default function MessageForm({ buildingId = "", updatePosts }) {
   // Pass buildingId to the component
   const [content, setContent] = useState("");
 
@@ -25,17 +25,24 @@ export default function MessageForm({ buildingId }) {
         credentials: "include", // Include user credentials
       });
 
+      console.log(response);
+
       if (response.ok) {
+        const newPost = await response.json();
+
         // ... success, clear the form ...
-        console.log("New post submitted successfully!");
+        console.log("New post submitted successfully!", newPost);
         const form = event.target; // Access the form element
+        setContent(""); // Reset the form
+
+        // Use a function to update the list of posts on the parent component
+        updatePosts(newPost.post);
       } else {
         // ... handle error, display message to user ...
       }
     } catch (error) {
       console.error("Error submitting post:", error);
     }
-    form.reset(); // Reset the form
   };
 
   return (

@@ -82,7 +82,7 @@ export default function RegisterBuildForm() {
   return (
     <>
       <Link href="/home" style={{ fontSize: "xx-large" }}>
-        🔙
+        ⬅
       </Link>
       <div className="formContainer">
         <div className="loginForm">

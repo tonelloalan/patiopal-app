@@ -36,7 +36,7 @@ export default function BuildingsList() {
   return (
     <>
       <Link href="/home" style={{ fontSize: "xx-large" }}>
-        🔙
+        ⬅
       </Link>
       <div>
         <h1>My Buildings</h1>
