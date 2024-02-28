@@ -3,6 +3,7 @@
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function BuildingsList() {
   const { data: session, status } = useSession();
@@ -35,6 +36,8 @@ export default function BuildingsList() {
 
   return (
     <>
+      <Logo />
+      <br />
       <Link href="/home" style={{ fontSize: "xx-large" }}>
         ⬅
       </Link>

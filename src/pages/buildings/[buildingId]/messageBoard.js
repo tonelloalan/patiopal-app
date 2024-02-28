@@ -4,6 +4,7 @@ import BackButton from "@/components/BackButton";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import Logo from "@/components/Logo";
 
 export default function MessageBoard() {
   const [posts, setPosts] = useState([]);
@@ -73,6 +74,8 @@ export default function MessageBoard() {
 
   return (
     <>
+      <Logo />
+      <br />
       <div className="messageBoard-navBar">
         <BackButton />{" "}
         <p

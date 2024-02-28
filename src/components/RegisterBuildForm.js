@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
+import Logo from "./Logo";
 
 export default function RegisterBuildForm() {
   const [streetName, setStreetName] = useState("");
@@ -81,6 +82,8 @@ export default function RegisterBuildForm() {
 
   return (
     <>
+      <Logo />
+      <br />
       <Link href="/home" style={{ fontSize: "xx-large" }}>
         ⬅
       </Link>

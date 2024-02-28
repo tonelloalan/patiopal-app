@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useSession } from "next-auth/react";
 import EditBuildingForm from "@/components/EditBuildForm";
 import Image from "next/image";
+import Logo from "@/components/Logo";
 
 let updatedBuildingData;
 
@@ -199,6 +200,8 @@ export default function BuildingDetailsPage() {
 
   return (
     <div>
+      <Logo />
+      <br />
       <Link href={"/buildings"} style={{ fontSize: "xx-large" }}>
         ⬅
       </Link>

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { useSession } from "next-auth/react";
+import Logo from "./Logo";
 
 export default function RegisterForm() {
   const [firstName, setFirstName] = useState("");
@@ -113,61 +114,66 @@ export default function RegisterForm() {
   };
 
   return (
-    <div className="formContainer">
-      <div className="loginForm">
-        <h2>Register</h2>
-        <form onSubmit={handleSubmit} className="formDetails">
-          <input
-            onChange={(e) => setFirstName(e.target.value)} // this stores the value inside this input field into the state
-            type="text"
-            name="firstName"
-            id="firstName"
-            placeholder="First name"
-          ></input>
-          <input
-            onChange={(e) => setLastName(e.target.value)}
-            type="text"
-            name="lastName"
-            id="lastName"
-            placeholder="Last name"
-          ></input>
-          <input
-            onChange={(e) => setUsername(e.target.value)}
-            type="text"
-            name="username"
-            id="username"
-            placeholder="Username"
-          ></input>
-          <input
-            onChange={(e) => setEmail(e.target.value)}
-            type="text"
-            name="email"
-            id="email"
-            placeholder="Email"
-          ></input>
-          <input
-            onChange={(e) => setPassword(e.target.value)}
-            type="password"
-            name="password"
-            id="password"
-            placeholder="Password"
-          ></input>
-          <input
-            onChange={(e) => setConfirmPassword(e.target.value)}
-            type="password"
-            name="confirmPassword"
-            id="confirmPassword"
-            placeholder="Repeat Password"
-          ></input>
-          <button>Register</button>
+    <>
+      <Logo />
 
-          {error && <div className="errorMessage">{error}</div>}
+      <div className="formContainer">
+        <div className="loginForm">
+          <h2>Register</h2>
+          <form onSubmit={handleSubmit} className="formDetails">
+            <input
+              onChange={(e) => setFirstName(e.target.value)} // this stores the value inside this input field into the state
+              type="text"
+              name="firstName"
+              id="firstName"
+              placeholder="First name"
+            ></input>
+            <input
+              onChange={(e) => setLastName(e.target.value)}
+              type="text"
+              name="lastName"
+              id="lastName"
+              placeholder="Last name"
+            ></input>
+            <input
+              onChange={(e) => setUsername(e.target.value)}
+              type="text"
+              name="username"
+              id="username"
+              placeholder="Username"
+            ></input>
+            <input
+              onChange={(e) => setEmail(e.target.value)}
+              type="email"
+              name="email"
+              id="email"
+              placeholder="Email"
+            ></input>
+            <input
+              onChange={(e) => setPassword(e.target.value)}
+              type="password"
+              name="password"
+              id="password"
+              placeholder="Password"
+            ></input>
+            <input
+              onChange={(e) => setConfirmPassword(e.target.value)}
+              type="password"
+              name="confirmPassword"
+              id="confirmPassword"
+              placeholder="Repeat Password"
+            ></input>
+            <button>Register</button>
 
-          <Link className="registerLinkPhrase" href={"/"}>
-            Already have an account? <span className="registerLink">Login</span>
-          </Link>
-        </form>
+            {error && <div className="errorMessage">{error}</div>}
+
+            <Link className="registerLinkPhrase" href={"/"}>
+              Already have an account?{" "}
+              <span className="registerLink">Login</span>
+            </Link>
+          </form>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
