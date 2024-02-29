@@ -1,11 +1,12 @@
 import dbConnect from "../../../db/connect";
 import Building from "../../../db/models/Building";
-import { getSession } from "next-auth/react";
+import { getServerSession } from "next-auth/next";
+import { authOptions } from "./auth/[...nextauth]";
 
 export default async function handler(req, res) {
   await dbConnect(); // Connect to DB.
 
-  const session = await getSession({ req }); // This protects the current route, making sure only logged in users can access it.
+  const session = await getServerSession(req, res, authOptions); // This protects the current route, making sure only logged in users can access it.
 
   //   console.log("SESSION BE: ", session);
 
