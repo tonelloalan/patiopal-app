@@ -21,8 +21,10 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-image: url(/bg01-color-small.jpg);
-  background-size: 250px;
+  background-image: url(/pic03.jpeg);
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-attachment: fixed;
   position: relative; /* Required for absolute positioning of overlay */
 }
 
